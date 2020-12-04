@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Day4
 {
@@ -55,6 +56,14 @@ namespace Day4
         }
     }
 
+    public class HairRule {
+        public bool Valid(string hair)
+        {
+            string pattern = @"#[0-9a-f]{6}";
+            return Regex.Matches(hair, pattern).Count == 1;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -72,7 +81,8 @@ namespace Day4
                 {"byr", new DigitRule {NumDigits = 4, Min = 1920, Max = 2002}},
                 {"iyr", new DigitRule {NumDigits = 4, Min = 2010, Max = 2020}},
                 {"eyr", new DigitRule {NumDigits = 4, Min = 2020, Max = 2030}},
-                {"hgt", new HeightRule() }
+                {"hgt", new HeightRule() },
+                {"hcl", new HairRule() }
             };
 
             int countValid = 0;
@@ -131,6 +141,15 @@ namespace Day4
                     if (rule is HeightRule heightRule)
                     {
                         if (!heightRule.Valid(keys[1]))
+                        {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    if (rule is HairRule hairRule)
+                    {
+                        if (!hairRule.Valid(keys[1]))
                         {
                             valid = false;
                             break;
