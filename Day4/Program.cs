@@ -1,74 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Day4
 {
-    public class MinMaxRule
-    {
-        public int Min { get; set; }
-        public int Max { get; set; }
-
-        public bool Valid(int number)
-        {
-            return number >= Min && number <= Max;
-        }
-    }
-    public class DigitRule: MinMaxRule
-    {
-        public int NumDigits { get; set; }
-
-        public bool Valid(string number)
-        {
-            if (int.TryParse(number, out var parsed))
-            {
-                return number.Length == NumDigits && base.Valid(parsed);
-            }
-
-            return false;
-        }
-    }
-
-    public class HeightRule
-    {
-        public bool Valid(string height)
-        {
-            var heights = new Dictionary<string, MinMaxRule>
-            {
-                {"cm", new MinMaxRule() {Min = 150, Max = 193}}, {"in", new MinMaxRule() {Min = 59, Max = 76}}
-            };
-
-            if (height.Contains("cm"))
-            {
-                var totalHeight = height.Replace("cm", "");
-                var rule = heights["cm"];
-                return rule.Valid(int.Parse(totalHeight));
-            }
-            if (height.Contains("in"))
-            {
-                var totalHeight = height.Replace("in", "");
-                var rule = heights["in"];
-                return rule.Valid(int.Parse(totalHeight));
-            }
-
-            return false;
-        }
-    }
-
-    public class HairRule {
-        public bool Valid(string hair)
-        {
-            string pattern = @"#[0-9a-f]{6}";
-            return Regex.Matches(hair, pattern).Count == 1;
-        }
-    }
-
     class Program
     {
         static void Main(string[] args)
         {
-            //SimplePassportChecker();
+            SimplePassportChecker();
             ComplexPassportChecker();
         }
 
@@ -82,7 +22,9 @@ namespace Day4
                 {"iyr", new DigitRule {NumDigits = 4, Min = 2010, Max = 2020}},
                 {"eyr", new DigitRule {NumDigits = 4, Min = 2020, Max = 2030}},
                 {"hgt", new HeightRule() },
-                {"hcl", new HairRule() }
+                {"hcl", new HairRule() },
+                {"ecl", new EyeRule() },
+                {"pid", new PassportRule() }
             };
 
             int countValid = 0;
@@ -155,6 +97,24 @@ namespace Day4
                             break;
                         }
                     }
+
+                    if (rule is EyeRule eyeRule)
+                    {
+                        if (!eyeRule.Valid(keys[1]))
+                        {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    if (rule is PassportRule passportRule)
+                    {
+                        if (!passportRule.Valid(keys[1]))
+                        {
+                            valid = false;
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -212,4 +172,6 @@ namespace Day4
             return valid;
         }
     }
+
+    
 }
