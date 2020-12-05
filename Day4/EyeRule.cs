@@ -1,6 +1,6 @@
 ﻿namespace Day4
 {
-    public class EyeRule
+    public class EyeRule: IRule
     {
         public bool Valid(string text)
         {

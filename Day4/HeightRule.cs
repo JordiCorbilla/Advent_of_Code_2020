@@ -2,7 +2,7 @@
 
 namespace Day4
 {
-    public class HeightRule
+    public class HeightRule: IRule
     {
         public bool Valid(string height)
         {

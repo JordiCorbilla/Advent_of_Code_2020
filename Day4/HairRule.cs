@@ -2,7 +2,8 @@
 
 namespace Day4
 {
-    public class HairRule {
+    public class HairRule: IRule
+    {
         public bool Valid(string hair)
         {
             string pattern = @"#[0-9a-f]{6}";

@@ -1,6 +1,6 @@
 ﻿namespace Day4
 {
-    public class DigitRule: MinMaxRule
+    public class DigitRule: MinMaxRule, IRule
     {
         public int NumDigits { get; set; }
 

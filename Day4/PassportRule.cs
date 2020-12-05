@@ -1,6 +1,6 @@
 ﻿namespace Day4
 {
-    public class PassportRule
+    public class PassportRule: IRule
     {
         public bool Valid(string value)
         {
