@@ -13,7 +13,8 @@ namespace Day5
         static void Main(string[] args)
         {
             var file = File.ReadAllLines("input.txt");
-
+            //see the map
+            int[,] map = new int[127, 8];
             int highest = 0;
             foreach (var s in file)
             {
@@ -53,11 +54,28 @@ namespace Day5
 
                 var column = min;
                 var seatId = (row * 8) + column;
+
+                map[row, column] = 1;
+
                 if (seatId > highest)
                     highest = seatId;
                 Console.WriteLine(seatId);
             }
             Console.WriteLine(highest);
+
+            for (int i = 0; i < 127; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    Console.Write($"{map[i, j]},");
+                    if (map[i, j] == 0)
+                    {
+                        Console.Write($"*{(i * 8) + j}*");
+                    }
+                }
+                Console.Write(Environment.NewLine);
+            }
+            
         }
 
         static (int, int, int, int) GenerateRange(int min, int max)
