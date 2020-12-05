@@ -5,7 +5,7 @@ namespace Day2
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             FirstInterpretation();
             SecondInterpretation();
