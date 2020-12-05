@@ -5,7 +5,7 @@ namespace Day1
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var data = DataInput.Get();
             var calculation = new Dictionary<int, int>();

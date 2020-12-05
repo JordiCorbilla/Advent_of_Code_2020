@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualBasic;
 
 namespace Day5
 {
@@ -10,7 +9,7 @@ namespace Day5
         // 0 - 63 | 64 - 127
         // 0 - 32 | 32 - 63 | 64 - 95 | 96 - 127
         // 
-        static void Main(string[] args)
+        static void Main()
         {
             var file = File.ReadAllLines("input.txt");
             //see the map

@@ -5,7 +5,7 @@ namespace Day3
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var trees = SlideThrough();
             Console.WriteLine(trees);
