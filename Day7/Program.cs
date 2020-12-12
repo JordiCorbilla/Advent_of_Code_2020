@@ -95,7 +95,9 @@ namespace Day7
 
             foreach (var nodeNode in node.Nodes)
             {
-                SearchNode(nodeNode, name);
+                var nodeFound = SearchNode(nodeNode, name);
+                if (nodeFound != null)
+                    return nodeFound;
             }
 
             return null;
