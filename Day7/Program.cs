@@ -63,6 +63,7 @@ namespace Day7
                                     root.Nodes.Add(new Tree(number, nameBag));
                                 }
                                 newRules.Add(root);
+                                break;
                             }
                             else
                             {
