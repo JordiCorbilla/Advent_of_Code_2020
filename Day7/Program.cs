@@ -21,7 +21,7 @@ namespace Day7
     {
         static void Main(string[] args)
         {
-            var file = File.ReadAllLines("input.txt");
+            var file = File.ReadAllLines("inputtest.txt");
             var rules = new List<Tree>();
 
             foreach (var s in file)

@@ -1,0 +1,6 @@
+mirrored chartreuse bags contain 3 clear beige bags, 3 shiny silver bags, 3 bright green bags.
+clear beige bags contain 5 bright green bags.
+bright green bags contain 4 bright indigo bags.
+bright indigo bags contain 1 posh brown bag.
+dotted red bags contain 4 light chartreuse bags.
+shiny silver bags contain 3 shiny olive bags, 1 dark plum bag, 2 muted cyan bags.
