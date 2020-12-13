@@ -4,19 +4,6 @@ using System.IO;
 
 namespace Day7
 {
-    public class Tree
-    {
-        public List<Tree> Nodes { get; set; }
-        public int Count { get; set; }
-        public string Description { get; set; }
-
-        public Tree(int count, string description)
-        {
-            Count = count;
-            Description = description;
-            Nodes = new List<Tree>();
-        }
-    }
     class Program
     {
         static void Main(string[] args)
@@ -86,7 +73,8 @@ namespace Day7
                                 alreadyAdded = true;
                             }
                         }
-                        rules.AddRange(newRules);
+                        if (newRules.Count > 0)
+                            rules.AddRange(newRules);
                     }
                 }
             }
