@@ -37,11 +37,13 @@ namespace Day7
 
                     if (rules.Count == 0)
                     {
+                        node = node.Replace("bags", "").Replace("bag", "").Trim();
                         var root = new Tree(1, node);
                         foreach (var bag in rest)
                         {
                             int number = int.Parse(bag.Trim().Substring(0, bag.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
                             var nameBag = bag.Replace(number.ToString(), "").Trim();
+                            nameBag = nameBag.Replace("bags", "").Replace("bag", "").Trim();
                             root.Nodes.Add(new Tree(number, nameBag));
                         }
                         rules.Add(root);
@@ -50,29 +52,38 @@ namespace Day7
                     {
                         //do a search
                         var newRules = new List<Tree>();
+                        bool alreadyAdded = false;
                         foreach (var rule in rules)
                         {
+                            node = node.Replace("bags", "").Replace("bag", "").Trim();
                             var nodeTree = SearchNode(rule, node);
-                            if (nodeTree == null)
+
+                            if (nodeTree == null && !alreadyAdded)
                             {
+                                node = node.Replace("bags", "").Replace("bag", "").Trim();
                                 var root = new Tree(1, node);
                                 foreach (var bag in rest)
                                 {
                                     int number = int.Parse(bag.Trim().Substring(0, bag.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
                                     var nameBag = bag.Replace(number.ToString(), "").Trim();
+                                    nameBag = nameBag.Replace("bags", "").Replace("bag", "").Trim();
                                     root.Nodes.Add(new Tree(number, nameBag));
                                 }
                                 newRules.Add(root);
                                 break;
                             }
-                            else
+
+                            if(nodeTree != null)
                             {
                                 foreach (var bag in rest)
                                 {
                                     int number = int.Parse(bag.Trim().Substring(0, bag.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
                                     var nameBag = bag.Replace(number.ToString(), "").Trim();
+                                    nameBag = nameBag.Replace("bags", "").Replace("bag", "").Trim();
                                     nodeTree.Nodes.Add(new Tree(number, nameBag));
                                 }
+
+                                alreadyAdded = true;
                             }
                         }
                         rules.AddRange(newRules);
