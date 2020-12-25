@@ -6,11 +6,16 @@ using Newtonsoft.Json;
 
 namespace Day7
 {
+    public class Node
+    {
+        public string Name { get; set; }
+        public int Level { get; set; }
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            var file = File.ReadAllLines("inputtestsample2.txt");
+            var file = File.ReadAllLines("input.txt");
             var rules = new List<Tree>();
 
             foreach (var s in file)
@@ -95,29 +100,67 @@ namespace Day7
             foreach (var rule in rules)
             {
                 var json = JsonConvert.SerializeObject(rule);
-                Console.WriteLine(json);
-                Console.WriteLine();
-
-                var nodesVisited = new List<string>();
-                TraverseTree(rule, "shiny gold", nodesVisited);
-
-                foreach (var bags in nodesVisited)
+                if (json.Contains("shiny gold"))
                 {
-                    Console.WriteLine(bags);
-                }
-                Console.WriteLine();
+                    Console.WriteLine(json);
+                    Console.WriteLine();
 
-                var memory = new List<string>();
-                foreach (var node in nodesVisited)
-                {
-                    memory.Add(node);
-                    if (node != "shiny gold") continue;
-                    var itemsToAdd = memory.Where(x => x != "shiny gold");
-                    foreach (var found in itemsToAdd)
+                    var nodesVisited = new List<Node>();
+                    var level = 0;
+                    TraverseTree(rule, "shiny gold", nodesVisited, level);
+
+                    foreach (var bags in nodesVisited)
                     {
-                        unique.Add(found);
+                        Console.WriteLine($"Level: {bags.Level}:{bags.Name}");
                     }
-                    memory = new List<string>();
+
+                    Console.WriteLine();
+
+                    var memory = new Dictionary<int, string>();
+
+                    int levelMultiplier = 1;
+                    if (!memory.ContainsKey(nodesVisited[0].Level))
+                        memory.Add(nodesVisited[0].Level, nodesVisited[0].Name);
+
+                    for (var index = 1; index < nodesVisited.Count; index++)
+                    {
+                        if (nodesVisited[index].Level < nodesVisited[index - 1].Level)
+                            levelMultiplier += 100;
+
+                        var node = nodesVisited[index];
+                        if (!memory.ContainsKey(node.Level * levelMultiplier))
+                            memory.Add(node.Level * levelMultiplier, node.Name);
+                        else
+                        {
+                            if (memory[node.Level * levelMultiplier] != "shiny gold")
+                                memory[node.Level * levelMultiplier] = node.Name;
+                        }
+                    }
+
+                    foreach (var mem in memory)
+                    {
+                        if (mem.Value != "shiny gold")
+                            unique.Add(mem.Value);
+                    }
+
+
+
+
+                    //foreach (var node in nodesVisited)
+                    //{
+                    //    currentLevel = node.Level;
+                    //    memory.Add(node.Name);
+                    //    if (node.Name != "shiny gold")
+                    //    {
+
+                    //    }
+                    //    var itemsToAdd = memory.Where(x => x != "shiny gold");
+                    //    foreach (var found in itemsToAdd)
+                    //    {
+                    //        unique.Add(found);
+                    //    }
+                    //    memory = new List<string>();
+                    //}
                 }
             }
 
@@ -146,16 +189,16 @@ namespace Day7
             return null;
         }
 
-        static void TraverseTree(Tree node, string name, List<string> nodesVisited)
+        static void TraverseTree(Tree node, string name, List<Node> nodesVisited, int level)
         {
-            nodesVisited.Add(node.Description);
+            nodesVisited.Add(new Node { Name = node.Description, Level = level });
             if (node.Description == name)
             {
                 return;
             }
             foreach (var nodeNode in node.Nodes)
             {
-                TraverseTree(nodeNode, name, nodesVisited);
+                TraverseTree(nodeNode, name, nodesVisited, level + 1);
             }
         }
     }
