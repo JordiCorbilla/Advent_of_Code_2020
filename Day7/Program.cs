@@ -10,9 +10,8 @@ namespace Day7
     {
         static void Main(string[] args)
         {
-            var file = File.ReadAllLines("inputtestsample.txt");
+            var file = File.ReadAllLines("input.txt");
             var rules = new List<Tree>();
-            var nodesVisited = new List<string>();
 
             foreach (var s in file)
             {
@@ -82,19 +81,32 @@ namespace Day7
                 }
             }
 
+            HashSet<string> unique = new HashSet<string>();
+
             foreach (var rule in rules)
             {
                 var json = JsonConvert.SerializeObject(rule);
                 Console.WriteLine(json);
+                Console.WriteLine();
 
+                var nodesVisited = new List<string>();
                 TraverseTree(rule, "shiny gold", nodesVisited);
-            }
 
-            foreach (var node in nodesVisited)
-            {
-                Console.WriteLine(node);
+                var memory = new List<string>();
+                foreach (var node in nodesVisited)
+                {
+                    memory.Add(node);
+                    if (node != "shiny gold") continue;
+                    var itemsToAdd = memory.Where(x => x != "shiny gold");
+                    foreach (var found in itemsToAdd)
+                    {
+                        unique.Add(found);
+                    }
+                    memory = new List<string>();
+                }
             }
             
+            Console.WriteLine(unique.Count);
         }
 
         static Tree SearchNode(Tree node, string name)
