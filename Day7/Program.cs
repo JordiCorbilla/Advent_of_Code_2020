@@ -10,7 +10,7 @@ namespace Day7
     {
         static void Main(string[] args)
         {
-            var file = File.ReadAllLines("input.txt");
+            var file = File.ReadAllLines("inputtestsample2.txt");
             var rules = new List<Tree>();
 
             foreach (var s in file)
@@ -56,7 +56,16 @@ namespace Day7
                                     int number = int.Parse(bag.Trim().Substring(0, bag.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
                                     var nameBag = bag.Replace(number.ToString(), "").Trim();
                                     nameBag = nameBag.Replace("bags", "").Replace("bag", "").Trim();
-                                    root.Nodes.Add(new Tree(number, nameBag));
+                                    var subtree = new Tree(number, nameBag);
+                                    var subNodes = SearchNode(rule, subtree.Description);
+                                    if (subNodes != null)
+                                    {
+                                        foreach (var j in subNodes.Nodes)
+                                        {
+                                            subtree.Nodes.Add(j);
+                                        }
+                                    }
+                                    root.Nodes.Add(subtree);
                                 }
                                 newRules.Add(root);
                                 break;
@@ -92,6 +101,12 @@ namespace Day7
                 var nodesVisited = new List<string>();
                 TraverseTree(rule, "shiny gold", nodesVisited);
 
+                foreach (var bags in nodesVisited)
+                {
+                    Console.WriteLine(bags);
+                }
+                Console.WriteLine();
+
                 var memory = new List<string>();
                 foreach (var node in nodesVisited)
                 {
@@ -105,7 +120,12 @@ namespace Day7
                     memory = new List<string>();
                 }
             }
-            
+
+            foreach (var bags in unique)
+            {
+                Console.WriteLine(bags);
+            }
+            Console.WriteLine();
             Console.WriteLine(unique.Count);
         }
 
