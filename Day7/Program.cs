@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Day7
 {
@@ -8,8 +10,9 @@ namespace Day7
     {
         static void Main(string[] args)
         {
-            var file = File.ReadAllLines("inputtest.txt");
+            var file = File.ReadAllLines("inputtestsample.txt");
             var rules = new List<Tree>();
+            var nodesVisited = new List<string>();
 
             foreach (var s in file)
             {
@@ -81,8 +84,17 @@ namespace Day7
 
             foreach (var rule in rules)
             {
-                Console.WriteLine(rule);
+                var json = JsonConvert.SerializeObject(rule);
+                Console.WriteLine(json);
+
+                TraverseTree(rule, "shiny gold", nodesVisited);
             }
+
+            foreach (var node in nodesVisited)
+            {
+                Console.WriteLine(node);
+            }
+            
         }
 
         static Tree SearchNode(Tree node, string name)
@@ -100,6 +112,19 @@ namespace Day7
             }
 
             return null;
+        }
+
+        static void TraverseTree(Tree node, string name, List<string> nodesVisited)
+        {
+            nodesVisited.Add(node.Description);
+            if (node.Description == name)
+            {
+                return;
+            }
+            foreach (var nodeNode in node.Nodes)
+            {
+                TraverseTree(nodeNode, name, nodesVisited);
+            }
         }
     }
 }
