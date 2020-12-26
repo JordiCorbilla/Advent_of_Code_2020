@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
 
 namespace Day7
 {
-    public class Node
-    {
-        public string Name { get; set; }
-        public int Level { get; set; }
-    }
-
     public class Bag
     {
         public int Capacity { get; set; }
@@ -29,37 +21,35 @@ namespace Day7
         }
     }
 
-    class Program
+    internal class Program
     {
         public static Dictionary<string, List<Bag>> Rules = new Dictionary<string, List<Bag>>();
         public static HashSet<string> NodesVisited = new HashSet<string>();
 
-        static void Main(string[] args)
+        private static void Main()
         {
             var file = File.ReadAllLines("input.txt");
             
             foreach (var s in file)
             {
                 var bags = s.Replace(".", "");
-                if (!s.Contains("no other bags"))
-                {
-                    var sources = bags.Split("contain");
-                    var key = sources[0];
-                    var components = sources[1].Split(",");
+                if (s.Contains("no other bags")) continue;
+                var sources = bags.Split("contain");
+                var key = sources[0];
+                var components = sources[1].Split(",");
 
-                    key = key.Replace("bags", "").Replace("bag", "").Trim();
-                    foreach (var component in components)
-                    {
-                        var number = int.Parse(component.Trim().Substring(0, component.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
-                        var nameBag = component.Replace(number.ToString(), "").Trim();
-                        nameBag = nameBag.Replace("bags", "").Replace("bag", "").Trim();
-                        BuildRule(key, nameBag, number);
-                    }
+                key = key.Replace("bags", "").Replace("bag", "").Trim();
+                foreach (var component in components)
+                {
+                    var number = int.Parse(component.Trim().Substring(0, component.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
+                    var nameBag = component.Replace(number.ToString(), "").Trim();
+                    nameBag = nameBag.Replace("bags", "").Replace("bag", "").Trim();
+                    BuildRule(key, nameBag, number);
                 }
             }
 
-            var p = JsonConvert.SerializeObject(Rules);
-            Console.WriteLine(p);
+            //var p = JsonConvert.SerializeObject(Rules);
+            //Console.WriteLine(p);
 
             Console.WriteLine();
             var shiny = Rules["shiny gold"];
@@ -85,16 +75,14 @@ namespace Day7
             }
         }
 
-        private static void TraverseUp(List<Bag> bags)
+        private static void TraverseUp(IEnumerable<Bag> bags)
         {
             foreach (var bag in bags)
             {
                 NodesVisited.Add(bag.Name);
-                if (Rules.ContainsKey(bag.Name))
-                {
-                    var container = Rules[bag.Name];
-                    TraverseUp(container);
-                }
+                if (!Rules.ContainsKey(bag.Name)) continue;
+                var container = Rules[bag.Name];
+                TraverseUp(container);
             }
         }
     }
