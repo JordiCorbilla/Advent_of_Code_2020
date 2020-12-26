@@ -32,11 +32,11 @@ namespace Day7
     class Program
     {
         public static Dictionary<string, List<Bag>> Rules = new Dictionary<string, List<Bag>>();
-        public static int Count;
+        public static HashSet<string> NodesVisited = new HashSet<string>();
 
         static void Main(string[] args)
         {
-            var file = File.ReadAllLines("inputtestsample.txt");
+            var file = File.ReadAllLines("input.txt");
             
             foreach (var s in file)
             {
@@ -68,6 +68,7 @@ namespace Day7
             {
                 Console.WriteLine(bag);
             }
+            Console.WriteLine(NodesVisited.Count);
         }
 
         private static void BuildRule(string container, string name, int capacity)
@@ -88,7 +89,7 @@ namespace Day7
         {
             foreach (var bag in bags)
             {
-                Count++;
+                NodesVisited.Add(bag.Name);
                 if (Rules.ContainsKey(bag.Name))
                 {
                     var container = Rules[bag.Name];
