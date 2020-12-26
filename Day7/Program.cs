@@ -32,6 +32,7 @@ namespace Day7
     class Program
     {
         public static Dictionary<string, List<Bag>> Rules = new Dictionary<string, List<Bag>>();
+        public static int Count;
 
         static void Main(string[] args)
         {
@@ -62,6 +63,7 @@ namespace Day7
 
             Console.WriteLine();
             var shiny = Rules["shiny gold"];
+            TraverseUp(shiny);
             foreach (var bag in shiny)
             {
                 Console.WriteLine(bag);
@@ -79,6 +81,19 @@ namespace Day7
             {
                 var keys = Rules[name];
                 keys.Add(new Bag(capacity, container));
+            }
+        }
+
+        private static void TraverseUp(List<Bag> bags)
+        {
+            foreach (var bag in bags)
+            {
+                Count++;
+                if (Rules.ContainsKey(bag.Name))
+                {
+                    var container = Rules[bag.Name];
+                    TraverseUp(container);
+                }
             }
         }
     }
