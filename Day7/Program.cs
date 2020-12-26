@@ -22,6 +22,11 @@ namespace Day7
             Capacity = capacity;
             Name = name;
         }
+
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
     }
 
     class Program
@@ -30,7 +35,7 @@ namespace Day7
 
         static void Main(string[] args)
         {
-            var file = File.ReadAllLines("input.txt");
+            var file = File.ReadAllLines("inputtestsample.txt");
             
             foreach (var s in file)
             {
@@ -54,6 +59,13 @@ namespace Day7
 
             var p = JsonConvert.SerializeObject(Rules);
             Console.WriteLine(p);
+
+            Console.WriteLine();
+            var shiny = Rules["shiny gold"];
+            foreach (var bag in shiny)
+            {
+                Console.WriteLine(bag);
+            }
         }
 
         private static void BuildRule(string container, string name, int capacity)
