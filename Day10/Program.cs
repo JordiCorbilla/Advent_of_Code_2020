@@ -6,7 +6,7 @@ namespace Day10
 {
     class Program
     {
-        public static int CountMax { get; set; }
+        public static long CountMax { get; set; }
         static void Main()
         {
             var file = File.ReadAllLines("input.txt");
