@@ -6,9 +6,10 @@ namespace Day10
 {
     class Program
     {
+        public static int CountMax { get; set; }
         static void Main()
         {
-            var file = File.ReadAllLines("input.txt");
+            var file = File.ReadAllLines("inputtest.txt");
             List<int> sorted = new List<int>();
 
             foreach (var row in file)
@@ -17,6 +18,12 @@ namespace Day10
             }
             sorted.Sort();
 
+            Part1(sorted);
+            Part2(sorted);
+        }
+
+        public static void Part1(List<int> sorted)
+        {
             int jolted = 0;
             int difference1 = 0;
             int difference2 = 0;
@@ -50,7 +57,23 @@ namespace Day10
             Console.WriteLine($"difference1: {difference1}");
             Console.WriteLine($"difference2: {difference2}");
             Console.WriteLine($"difference3: {difference3}");
-            Console.WriteLine($"Total: {difference3*difference1}");
+            Console.WriteLine($"Total: {difference3 * difference1}");
+        }
+
+        public static void Part2(List<int> sorted)
+        {
+            int leaf = sorted[^1];
+
+        }
+
+        public static void GeneratePaths(List<int> sorted, int index, int previous)
+        {
+            for(int i=index; i<sorted.Count; i++)
+            {
+                if (previous + 1 == sorted[i])
+                    GeneratePaths(sorted, i, sorted[i]);
+                if (previous + 3 == sorted[i])
+            }
         }
     }
 }
