@@ -9,7 +9,7 @@ namespace Day10
         public static int CountMax { get; set; }
         static void Main()
         {
-            var file = File.ReadAllLines("inputtest.txt");
+            var file = File.ReadAllLines("input.txt");
             List<int> sorted = new List<int>();
 
             foreach (var row in file)
@@ -19,6 +19,7 @@ namespace Day10
             sorted.Sort();
 
             Part1(sorted);
+            CountMax = 0;
             Part2(sorted);
         }
 
@@ -62,18 +63,23 @@ namespace Day10
 
         public static void Part2(List<int> sorted)
         {
-            int leaf = sorted[^1];
-
+            Dictionary<int, int> items = new Dictionary<int, int>();
+            foreach(var item in sorted)
+                items.Add(item, item);
+            GeneratePaths(items, 0, sorted[^1]);
+            Console.WriteLine($"Max leaves: {CountMax}");
         }
 
-        public static void GeneratePaths(List<int> sorted, int index, int previous)
+        public static void GeneratePaths(Dictionary<int, int> sorted, int previous, int leaf)
         {
-            for(int i=index; i<sorted.Count; i++)
-            {
-                if (previous + 1 == sorted[i])
-                    GeneratePaths(sorted, i, sorted[i]);
-                if (previous + 3 == sorted[i])
-            }
+            if (sorted.ContainsKey(previous + 1))
+                GeneratePaths(sorted, sorted[previous + 1], leaf);
+            if (sorted.ContainsKey(previous + 2))
+                GeneratePaths(sorted, sorted[previous + 2], leaf);
+            if (sorted.ContainsKey(previous + 3))
+                GeneratePaths(sorted, sorted[previous + 3], leaf);
+            if (previous==leaf)
+                CountMax++;
         }
     }
 }
