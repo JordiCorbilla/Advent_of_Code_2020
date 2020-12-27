@@ -10,6 +10,7 @@ namespace Day9
         {
             var file = File.ReadAllLines("input.txt");
             int preambleSize = 25;
+            long solution = 0;
 
             var explorer = new long[preambleSize];
 
@@ -23,11 +24,16 @@ namespace Day9
                 if (!belongs)
                 {
                     Console.WriteLine($"{row} does not belong!");
+                    solution = long.Parse(row);
                     break;
                 }
 
                 PushNewValue(explorer, row);
             }
+
+            Console.WriteLine(solution);
+            Part2(solution, file);
+
         }
 
         private static void PushNewValue(long[] explorer, string row)
@@ -58,6 +64,46 @@ namespace Day9
             }
 
             return false;
+        }
+
+        public static void Part2(long solution, string[] file)
+        {
+            int index = 0;
+            long solutionBackup = solution;
+            bool found = false;
+            long minValue = long.MaxValue;
+            long maxValue = long.MinValue;
+            while (!found)
+            {
+                for (int i = index; i < file.Length; i++)
+                {
+                    solution -= long.Parse(file[i]);
+                    
+                    if (long.Parse(file[i]) < minValue)
+                        minValue = long.Parse(file[i]);
+                    if (long.Parse(file[i]) > maxValue)
+                        maxValue = long.Parse(file[i]);
+
+                    if (solution == 0)
+                    {
+                        //found
+                        Console.WriteLine($"Min[{i}]: {minValue}, Max[{i}]: {maxValue}, Sum: {minValue + maxValue}");
+                        found = true;
+                        break;
+                    }
+
+                    if (solution < 0)
+                    {
+                        solution = solutionBackup;
+                        minValue = long.MaxValue;
+                        maxValue = long.MinValue;
+                        break;
+                    }
+
+                }
+
+                index++;
+            }
         }
     }
 }
