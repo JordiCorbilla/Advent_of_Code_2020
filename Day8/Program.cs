@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Day8
 {
+    // ReSharper disable all InconsistentNaming
     public enum InstructionOperation
     {
         nop,
@@ -20,17 +20,13 @@ namespace Day8
 
         public Instruction(string operation, string value)
         {
-            switch(operation)
+            Operation = operation switch
             {
-                case "nop": Operation = InstructionOperation.nop;
-                    break;
-                case "acc":
-                    Operation = InstructionOperation.acc;
-                    break;
-                case "jmp":
-                    Operation = InstructionOperation.jmp;
-                    break;
-            }
+                "nop" => InstructionOperation.nop,
+                "acc" => InstructionOperation.acc,
+                "jmp" => InstructionOperation.jmp,
+                _ => Operation
+            };
 
             value = value.Replace("+", "");
             Value = int.Parse(value);
@@ -41,19 +37,15 @@ namespace Day8
     {
         public static int Accumulator { get; set; }
         
-        static void Main(string[] args)
+        static void Main()
         {
-            var file = File.ReadAllLines("inputTest.txt");
-            var listInstructions = new List<Instruction>();
-            foreach (var row in file)
-            {
-                var ins = row.Split(" ");
-                var instruction = new Instruction(ins[0], ins[1]);
-                listInstructions.Add(instruction);
-            }
+            var file = File.ReadAllLines("inputfix.txt");
+            var listInstructions = file.Select(row => row.Split(" "))
+                .Select(ins => new Instruction(ins[0], ins[1])).ToList();
 
-            int index = 0;
-            while (true)
+            var index = 0;
+            var maxInstructions = listInstructions.Count;
+            while (index != maxInstructions)
             {
                 var op = listInstructions[index];
                 if (op.Visited)
@@ -76,6 +68,20 @@ namespace Day8
                 }
 
                 op.Visited = true;
+            }
+
+            Console.WriteLine(Accumulator);
+
+            foreach (var instruction in listInstructions)
+            {
+                string visited = "[x]";
+                string notVisited = "[ ]";
+                string output;
+                if (instruction.Visited)
+                    output = $"{visited} {instruction.Operation}:{instruction.Value}";
+                else
+                    output = $"{notVisited} {instruction.Operation}:{instruction.Value}";
+                Console.WriteLine(output);
             }
 
             Console.WriteLine(Accumulator);
