@@ -13,32 +13,30 @@ namespace Day11
         {
             var seating = File.ReadAllLines("inputtest.txt").ToList();
 
-            int seat = 0;
+            int seat = -1;
             int row = 0;
             var backup = new List<string>();
             foreach(var item in seating)
                 backup.Add(item);
 
-            MaxSeats = seating[seat].Length;
-            MaxRows = seating.Count;
+            MaxSeats = seating[0].Length-1;
+            MaxRows = seating.Count-1;
 
             while (!SeatChanged(backup, seating))
             {
-                while (seat < MaxSeats && row < MaxRows)
+                while (seat < MaxSeats || row < MaxRows)
                 {
-                    CheckDiagonal(seat, row, seating);
-
                     if (seat < MaxSeats)
                         seat++;
                     else
                     {
                         seat = 0;
+                        if (row < MaxRows)
+                        {
+                            row++;
+                        }
                     }
-
-                    if (row < MaxRows)
-                    {
-                        row++;
-                    }
+                    CheckDiagonal(seat, row, seating);
                 }
                 backup = new List<string>();
                 foreach (var item in seating)
