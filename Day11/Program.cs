@@ -21,7 +21,7 @@ namespace Day11
             MaxRows = seating.Count-1;
 
             var previous1 = Clone(seating);
-            while (!SeatChanged(backup, previous1))
+            while (SeatChanged(backup, previous1) || seat == -1)
             {
                 List<string> merged = null;
                 previous1 = Clone(backup);
@@ -45,6 +45,7 @@ namespace Day11
 
                 backup = Clone(merged);
                 row = 0;
+                seat = 0;
             }
         }
 
