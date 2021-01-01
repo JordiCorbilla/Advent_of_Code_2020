@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -25,7 +26,7 @@ namespace Day11
             {
                 List<string> merged = null;
                 previous1 = Clone(backup);
-                var previous = Clone(seating);
+                var previous = Clone(previous1);
                 while (seat < MaxSeats || row < MaxRows)
                 {
                     if (seat < MaxSeats)
@@ -38,7 +39,7 @@ namespace Day11
                             row++;
                         }
                     }
-                    var changed = CheckDiagonal(seat, row, seating);
+                    var changed = CheckDiagonal(seat, row, previous1);
                     merged = Merge(previous, changed, seat, row);
                     previous = Clone(merged);
                 }
@@ -47,6 +48,23 @@ namespace Day11
                 row = 0;
                 seat = 0;
             }
+            int occupied = CountOccupiedSeats(backup);
+            Console.WriteLine(occupied);
+        }
+
+        private static int CountOccupiedSeats(List<string> backup)
+        {
+            int count = 0;
+            foreach (var seat in backup)
+            {
+                foreach(var s in seat)
+                {
+                    if (s == '#')
+                        count++;
+                }
+            }
+
+            return count;
         }
 
         private static List<string> Merge(List<string> previous, List<string> next, int seat, int row)
@@ -90,7 +108,10 @@ namespace Day11
                 int max = 0;
                 int occupied = 0;
 
-                if (seat + 1 < MaxSeats)
+                // XXX
+                // XXO
+                // XXX
+                if (seat + 1 <= MaxSeats)
                 {
                     max++;
                     var next = backup[row][seat + 1];
@@ -99,7 +120,10 @@ namespace Day11
                     if (next == '#')
                         occupied++;
                 }
-                if (seat + 1 < MaxSeats && row+1 < MaxRows)
+                // XXX
+                // XXX
+                // XXO
+                if (seat + 1 <= MaxSeats && row+1 <= MaxRows)
                 {
                     max++;
                     var next = backup[row+1][seat + 1];
@@ -108,7 +132,10 @@ namespace Day11
                     if (next == '#')
                         occupied++;
                 }
-                if (row + 1 < MaxRows)
+                // XXX
+                // XXX
+                // XOX
+                if (row + 1 <= MaxRows)
                 {
                     max++;
                     var next = backup[row + 1][seat];
@@ -117,7 +144,10 @@ namespace Day11
                     if (next == '#')
                         occupied++;
                 }
-                if (seat - 1 > 0 && row + 1 < MaxRows)
+                // XXX
+                // XXX
+                // OXX
+                if (seat - 1 >= 0 && row + 1 <= MaxRows)
                 {
                     max++;
                     var next = backup[row + 1][seat - 1];
@@ -126,7 +156,10 @@ namespace Day11
                     if (next == '#')
                         occupied++;
                 }
-                if (seat - 1 > 0)
+                // XXX
+                // OXX
+                // XXX
+                if (seat - 1 >= 0)
                 {
                     max++;
                     var next = backup[row][seat-1];
@@ -135,7 +168,10 @@ namespace Day11
                     if (next == '#')
                         occupied++;
                 }
-                if (seat - 1 > 0 && row - 1 > 0)
+                // OXX
+                // XXX
+                // XXX
+                if (seat - 1 >= 0 && row - 1 >= 0)
                 {
                     max++;
                     var next = backup[row - 1][seat - 1];
@@ -144,7 +180,10 @@ namespace Day11
                     if (next == '#')
                         occupied++;
                 }
-                if (row - 1 > 0)
+                // XOX
+                // XXX
+                // XXX
+                if (row - 1 >= 0)
                 {
                     max++;
                     var next = backup[row - 1][seat];
@@ -153,7 +192,10 @@ namespace Day11
                     if (next == '#')
                         occupied++;
                 }
-                if (seat + 1 < MaxSeats && row - 1 > 0)
+                // XXO
+                // XXX
+                // XXX
+                if (seat + 1 <= MaxSeats && row - 1 >= 0)
                 {
                     max++;
                     var next = backup[row - 1][seat + 1];
