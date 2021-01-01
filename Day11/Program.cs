@@ -20,10 +20,12 @@ namespace Day11
             MaxSeats = seating[0].Length-1;
             MaxRows = seating.Count-1;
 
-            var previous = Clone(seating);
-            while (!SeatChanged(backup, previous))
+            var previous1 = Clone(seating);
+            while (!SeatChanged(backup, previous1))
             {
                 List<string> merged = null;
+                previous1 = Clone(backup);
+                var previous = Clone(seating);
                 while (seat < MaxSeats || row < MaxRows)
                 {
                     if (seat < MaxSeats)
@@ -37,7 +39,7 @@ namespace Day11
                         }
                     }
                     var changed = CheckDiagonal(seat, row, seating);
-                    merged = Merge(previous, changed);
+                    merged = Merge(previous, changed, seat, row);
                     previous = Clone(merged);
                 }
 
@@ -46,23 +48,32 @@ namespace Day11
             }
         }
 
-        private static List<string> Merge(List<string> previous, List<string> next)
+        private static List<string> Merge(List<string> previous, List<string> next, int seat, int row)
         {
             var merged = Clone(previous);
-            for (int i = 0; i < merged.Count; i++)
-            {
-                if (merged[i] != next[i])
-                {
-                    var seats = merged[i].ToCharArray();
-                    var nextSeats = next[i].ToCharArray();
-                    for (int j = 0; j < seats.Length; j++)
-                    {
-                        seats[j] = nextSeats[j];
-                    }
-                    var newArrangement = new string(seats);
-                    merged[i] = newArrangement;
-                }
-            }
+            var selectedRow = merged[row];
+            var nextRow = next[row];
+
+            var seats = selectedRow.ToCharArray();
+            var nextSeats = nextRow.ToCharArray();
+            seats[seat] = nextSeats[seat];
+            var newArrangement = new string(seats);
+            merged[row] = newArrangement;
+
+            //for (int i = 0; i < merged.Count; i++)
+            //{
+            //    if (merged[i] != next[i])
+            //    {
+            //        var seats = merged[i].ToCharArray();
+            //        var nextSeats = next[i].ToCharArray();
+            //        for (int j = 0; j < seats.Length; j++)
+            //        {
+            //            seats[j] = nextSeats[j];
+            //        }
+            //        var newArrangement = new string(seats);
+            //        merged[i] = newArrangement;
+            //    }
+            //}
 
             return merged;
         }
@@ -181,7 +192,13 @@ namespace Day11
 
         private static bool SeatChanged(IEnumerable<string> previousSeating, IReadOnlyList<string> newSeating)
         {
-            return previousSeating.Where((t, i) => t != newSeating[i]).Any();
+            int i = 0;
+            foreach (var t in previousSeating)
+            {
+                if (t != newSeating[i++]) return true;
+            }
+
+            return false;
         }
 
 
