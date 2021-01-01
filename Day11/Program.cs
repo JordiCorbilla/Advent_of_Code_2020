@@ -15,15 +15,15 @@ namespace Day11
 
             int seat = -1;
             int row = 0;
-            var backup = new List<string>();
-            foreach(var item in seating)
-                backup.Add(item);
+            var backup = Clone(seating);
 
             MaxSeats = seating[0].Length-1;
             MaxRows = seating.Count-1;
 
-            while (!SeatChanged(backup, seating))
+            var previous = Clone(seating);
+            while (!SeatChanged(backup, previous))
             {
+                List<string> merged = null;
                 while (seat < MaxSeats || row < MaxRows)
                 {
                     if (seat < MaxSeats)
@@ -36,19 +36,42 @@ namespace Day11
                             row++;
                         }
                     }
-                    CheckDiagonal(seat, row, seating);
+                    var changed = CheckDiagonal(seat, row, seating);
+                    merged = Merge(previous, changed);
+                    previous = Clone(merged);
                 }
-                backup = new List<string>();
-                foreach (var item in seating)
-                    backup.Add(item);
+
+                backup = Clone(merged);
                 row = 0;
             }
         }
 
-        private static void CheckDiagonal(int seat, int row, List<string> seatingPlan)
+        private static List<string> Merge(List<string> previous, List<string> next)
         {
+            var merged = Clone(previous);
+            for (int i = 0; i < merged.Count; i++)
+            {
+                if (merged[i] != next[i])
+                {
+                    var seats = merged[i].ToCharArray();
+                    var nextSeats = next[i].ToCharArray();
+                    for (int j = 0; j < seats.Length; j++)
+                    {
+                        seats[j] = nextSeats[j];
+                    }
+                    var newArrangement = new string(seats);
+                    merged[i] = newArrangement;
+                }
+            }
+
+            return merged;
+        }
+
+        private static List<string> CheckDiagonal(int seat, int row, List<string> seatingPlan)
+        {
+            var backup = Clone(seatingPlan);
             //Check the 8 adjacent sits
-            var currentSeat = seatingPlan[row][seat];
+            var currentSeat = backup[row][seat];
             if (currentSeat != '.')
             {
                 int empty = 0;
@@ -58,7 +81,7 @@ namespace Day11
                 if (seat + 1 < MaxSeats)
                 {
                     max++;
-                    var next = seatingPlan[row][seat + 1];
+                    var next = backup[row][seat + 1];
                     if (next == 'L' || next == '.')
                         empty++;
                     if (next == '#')
@@ -67,7 +90,7 @@ namespace Day11
                 if (seat + 1 < MaxSeats && row+1 < MaxRows)
                 {
                     max++;
-                    var next = seatingPlan[row+1][seat + 1];
+                    var next = backup[row+1][seat + 1];
                     if (next == 'L' || next == '.')
                         empty++;
                     if (next == '#')
@@ -76,7 +99,7 @@ namespace Day11
                 if (row + 1 < MaxRows)
                 {
                     max++;
-                    var next = seatingPlan[row + 1][seat];
+                    var next = backup[row + 1][seat];
                     if (next == 'L' || next == '.')
                         empty++;
                     if (next == '#')
@@ -85,7 +108,7 @@ namespace Day11
                 if (seat - 1 > 0 && row + 1 < MaxRows)
                 {
                     max++;
-                    var next = seatingPlan[row + 1][seat - 1];
+                    var next = backup[row + 1][seat - 1];
                     if (next == 'L' || next == '.')
                         empty++;
                     if (next == '#')
@@ -94,7 +117,7 @@ namespace Day11
                 if (seat - 1 > 0)
                 {
                     max++;
-                    var next = seatingPlan[row][seat-1];
+                    var next = backup[row][seat-1];
                     if (next == 'L' || next == '.')
                         empty++;
                     if (next == '#')
@@ -103,7 +126,7 @@ namespace Day11
                 if (seat - 1 > 0 && row - 1 > 0)
                 {
                     max++;
-                    var next = seatingPlan[row - 1][seat - 1];
+                    var next = backup[row - 1][seat - 1];
                     if (next == 'L' || next == '.')
                         empty++;
                     if (next == '#')
@@ -112,7 +135,7 @@ namespace Day11
                 if (row - 1 > 0)
                 {
                     max++;
-                    var next = seatingPlan[row - 1][seat];
+                    var next = backup[row - 1][seat];
                     if (next == 'L' || next == '.')
                         empty++;
                     if (next == '#')
@@ -121,32 +144,40 @@ namespace Day11
                 if (seat + 1 < MaxSeats && row - 1 > 0)
                 {
                     max++;
-                    var next = seatingPlan[row - 1][seat + 1];
+                    var next = backup[row - 1][seat + 1];
                     if (next == 'L' || next == '.')
                         empty++;
                     if (next == '#')
                         occupied++;
                 }
-
                 if (currentSeat == 'L' && max == empty)
                 {
-                    var seats = seatingPlan[row];
+                    var seats = backup[row];
                     char[] chars = seats.ToCharArray();
                     chars[seat] = '#';
                     var newArrangement = new string(chars);
-                    seatingPlan[row] = newArrangement;
+                    backup[row] = newArrangement;
                 }
                 else if (currentSeat == '#' && occupied >= 4)
                 {
-                    var seats = seatingPlan[row];
+                    var seats = backup[row];
                     char[] chars = seats.ToCharArray();
                     chars[seat] = 'L';
                     var newArrangement = new string(chars);
-                    seatingPlan[row] = newArrangement;
+                    backup[row] = newArrangement;
                 }
             }
+
+            return backup;
         }
 
+        public static List<string> Clone(List<string> list)
+        {
+            var backup = new List<string>();
+            foreach (var item in list)
+                backup.Add(item);
+            return backup;
+        }
 
         private static bool SeatChanged(IEnumerable<string> previousSeating, IReadOnlyList<string> newSeating)
         {
