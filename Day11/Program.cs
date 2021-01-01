@@ -5,17 +5,17 @@ using System.Linq;
 
 namespace Day11
 {
-    class Program
+    internal class Program
     {
         public static int MaxSeats { get; set; }
         public static int MaxRows { get; set; }
 
-        static void Main()
+        private static void Main()
         {
-            var seating = File.ReadAllLines("inputtest.txt").ToList();
+            var seating = File.ReadAllLines("input.txt").ToList();
 
-            int seat = -1;
-            int row = 0;
+            var seat = -1;
+            var row = 0;
             var backup = Clone(seating);
 
             MaxSeats = seating[0].Length-1;
@@ -48,26 +48,16 @@ namespace Day11
                 row = 0;
                 seat = 0;
             }
-            int occupied = CountOccupiedSeats(backup);
+            var occupied = CountOccupiedSeats(backup);
             Console.WriteLine(occupied);
         }
 
-        private static int CountOccupiedSeats(List<string> backup)
+        private static int CountOccupiedSeats(IEnumerable<string> backup)
         {
-            int count = 0;
-            foreach (var seat in backup)
-            {
-                foreach(var s in seat)
-                {
-                    if (s == '#')
-                        count++;
-                }
-            }
-
-            return count;
+            return backup.SelectMany(seat => seat).Count(s => s == '#');
         }
 
-        private static List<string> Merge(List<string> previous, List<string> next, int seat, int row)
+        private static List<string> Merge(List<string> previous, IReadOnlyList<string> next, int seat, int row)
         {
             var merged = Clone(previous);
             var selectedRow = merged[row];
@@ -79,21 +69,6 @@ namespace Day11
             var newArrangement = new string(seats);
             merged[row] = newArrangement;
 
-            //for (int i = 0; i < merged.Count; i++)
-            //{
-            //    if (merged[i] != next[i])
-            //    {
-            //        var seats = merged[i].ToCharArray();
-            //        var nextSeats = next[i].ToCharArray();
-            //        for (int j = 0; j < seats.Length; j++)
-            //        {
-            //            seats[j] = nextSeats[j];
-            //        }
-            //        var newArrangement = new string(seats);
-            //        merged[i] = newArrangement;
-            //    }
-            //}
-
             return merged;
         }
 
@@ -102,123 +77,174 @@ namespace Day11
             var backup = Clone(seatingPlan);
             //Check the 8 adjacent sits
             var currentSeat = backup[row][seat];
-            if (currentSeat != '.')
-            {
-                int empty = 0;
-                int max = 0;
-                int occupied = 0;
+            if (currentSeat == '.') return backup;
+            var empty = 0;
+            var max = 0;
+            var occupied = 0;
 
-                // XXX
-                // XXO
-                // XXX
-                if (seat + 1 <= MaxSeats)
+            // XXX
+            // XXO
+            // XXX
+            if (seat + 1 <= MaxSeats)
+            {
+                max++;
+                var next = backup[row][seat + 1];
+                switch (next)
                 {
-                    max++;
-                    var next = backup[row][seat + 1];
-                    if (next == 'L' || next == '.')
+                    case 'L':
+                    case '.':
                         empty++;
-                    if (next == '#')
+                        break;
+                    case '#':
                         occupied++;
+                        break;
                 }
-                // XXX
-                // XXX
-                // XXO
-                if (seat + 1 <= MaxSeats && row+1 <= MaxRows)
+            }
+            // XXX
+            // XXX
+            // XXO
+            if (seat + 1 <= MaxSeats && row+1 <= MaxRows)
+            {
+                max++;
+                var next = backup[row+1][seat + 1];
+                switch (next)
                 {
-                    max++;
-                    var next = backup[row+1][seat + 1];
-                    if (next == 'L' || next == '.')
+                    case 'L':
+                    case '.':
                         empty++;
-                    if (next == '#')
+                        break;
+                    case '#':
                         occupied++;
+                        break;
                 }
-                // XXX
-                // XXX
-                // XOX
-                if (row + 1 <= MaxRows)
+            }
+            // XXX
+            // XXX
+            // XOX
+            if (row + 1 <= MaxRows)
+            {
+                max++;
+                var next = backup[row + 1][seat];
+                switch (next)
                 {
-                    max++;
-                    var next = backup[row + 1][seat];
-                    if (next == 'L' || next == '.')
+                    case 'L':
+                    case '.':
                         empty++;
-                    if (next == '#')
+                        break;
+                    case '#':
                         occupied++;
+                        break;
                 }
-                // XXX
-                // XXX
-                // OXX
-                if (seat - 1 >= 0 && row + 1 <= MaxRows)
+            }
+            // XXX
+            // XXX
+            // OXX
+            if (seat - 1 >= 0 && row + 1 <= MaxRows)
+            {
+                max++;
+                var next = backup[row + 1][seat - 1];
+                switch (next)
                 {
-                    max++;
-                    var next = backup[row + 1][seat - 1];
-                    if (next == 'L' || next == '.')
+                    case 'L':
+                    case '.':
                         empty++;
-                    if (next == '#')
+                        break;
+                    case '#':
                         occupied++;
+                        break;
                 }
-                // XXX
-                // OXX
-                // XXX
-                if (seat - 1 >= 0)
+            }
+            // XXX
+            // OXX
+            // XXX
+            if (seat - 1 >= 0)
+            {
+                max++;
+                var next = backup[row][seat-1];
+                switch (next)
                 {
-                    max++;
-                    var next = backup[row][seat-1];
-                    if (next == 'L' || next == '.')
+                    case 'L':
+                    case '.':
                         empty++;
-                    if (next == '#')
+                        break;
+                    case '#':
                         occupied++;
+                        break;
                 }
-                // OXX
-                // XXX
-                // XXX
-                if (seat - 1 >= 0 && row - 1 >= 0)
+            }
+            // OXX
+            // XXX
+            // XXX
+            if (seat - 1 >= 0 && row - 1 >= 0)
+            {
+                max++;
+                var next = backup[row - 1][seat - 1];
+                switch (next)
                 {
-                    max++;
-                    var next = backup[row - 1][seat - 1];
-                    if (next == 'L' || next == '.')
+                    case 'L':
+                    case '.':
                         empty++;
-                    if (next == '#')
+                        break;
+                    case '#':
                         occupied++;
+                        break;
                 }
-                // XOX
-                // XXX
-                // XXX
-                if (row - 1 >= 0)
+            }
+            // XOX
+            // XXX
+            // XXX
+            if (row - 1 >= 0)
+            {
+                max++;
+                var next = backup[row - 1][seat];
+                switch (next)
                 {
-                    max++;
-                    var next = backup[row - 1][seat];
-                    if (next == 'L' || next == '.')
+                    case 'L':
+                    case '.':
                         empty++;
-                    if (next == '#')
+                        break;
+                    case '#':
                         occupied++;
+                        break;
                 }
-                // XXO
-                // XXX
-                // XXX
-                if (seat + 1 <= MaxSeats && row - 1 >= 0)
+            }
+            // XXO
+            // XXX
+            // XXX
+            if (seat + 1 <= MaxSeats && row - 1 >= 0)
+            {
+                max++;
+                var next = backup[row - 1][seat + 1];
+                switch (next)
                 {
-                    max++;
-                    var next = backup[row - 1][seat + 1];
-                    if (next == 'L' || next == '.')
+                    case 'L':
+                    case '.':
                         empty++;
-                    if (next == '#')
+                        break;
+                    case '#':
                         occupied++;
+                        break;
                 }
-                if (currentSeat == 'L' && max == empty)
+            }
+            switch (currentSeat)
+            {
+                case 'L' when max == empty:
                 {
                     var seats = backup[row];
-                    char[] chars = seats.ToCharArray();
+                    var chars = seats.ToCharArray();
                     chars[seat] = '#';
                     var newArrangement = new string(chars);
                     backup[row] = newArrangement;
+                    break;
                 }
-                else if (currentSeat == '#' && occupied >= 4)
+                case '#' when occupied >= 4:
                 {
                     var seats = backup[row];
-                    char[] chars = seats.ToCharArray();
+                    var chars = seats.ToCharArray();
                     chars[seat] = 'L';
                     var newArrangement = new string(chars);
                     backup[row] = newArrangement;
+                    break;
                 }
             }
 
@@ -227,23 +253,13 @@ namespace Day11
 
         public static List<string> Clone(List<string> list)
         {
-            var backup = new List<string>();
-            foreach (var item in list)
-                backup.Add(item);
-            return backup;
+            return list.ToList();
         }
 
         private static bool SeatChanged(IEnumerable<string> previousSeating, IReadOnlyList<string> newSeating)
         {
-            int i = 0;
-            foreach (var t in previousSeating)
-            {
-                if (t != newSeating[i++]) return true;
-            }
-
-            return false;
+            var i = 0;
+            return previousSeating.Any(t => t != newSeating[i++]);
         }
-
-
     }
 }
