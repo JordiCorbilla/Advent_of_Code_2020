@@ -22,7 +22,7 @@ namespace Day11
             MaxRows = seating.Count-1;
 
             var previous1 = Clone(seating);
-            while (SeatChanged(backup, previous1) || seat == -1)
+            while (SeatKeepsChanging(backup, previous1) || seat == -1)
             {
                 List<string> merged = null;
                 previous1 = Clone(backup);
@@ -39,7 +39,7 @@ namespace Day11
                             row++;
                         }
                     }
-                    var changed = CheckDiagonal(seat, row, previous1);
+                    var changed = CheckMostAdjacent(seat, row, previous1);
                     merged = Merge(previous, changed, seat, row);
                     previous = Clone(merged);
                 }
@@ -72,7 +72,7 @@ namespace Day11
             return merged;
         }
 
-        private static List<string> CheckDiagonal(int seat, int row, List<string> seatingPlan)
+        private static List<string> CheckMostAdjacent(int seat, int row, List<string> seatingPlan)
         {
             var backup = Clone(seatingPlan);
             //Check the 8 adjacent sits
@@ -256,7 +256,7 @@ namespace Day11
             return list.ToList();
         }
 
-        private static bool SeatChanged(IEnumerable<string> previousSeating, IReadOnlyList<string> newSeating)
+        private static bool SeatKeepsChanging(IEnumerable<string> previousSeating, IReadOnlyList<string> newSeating)
         {
             var i = 0;
             return previousSeating.Any(t => t != newSeating[i++]);
