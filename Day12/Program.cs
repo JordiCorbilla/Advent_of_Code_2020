@@ -1,12 +1,15 @@
-﻿using System;
-
-namespace Day12
+﻿namespace Day12
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Part1();
+        }
+
+        public static void Part1()
+        {
+
         }
     }
 }
