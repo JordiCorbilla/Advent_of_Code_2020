@@ -62,7 +62,7 @@ namespace Day11
 
         private static void Part2()
         {
-            var seating = File.ReadAllLines("inputtest.txt").ToList();
+            var seating = File.ReadAllLines("input.txt").ToList();
 
             var seat = -1;
             var row = 0;
@@ -96,12 +96,22 @@ namespace Day11
                 }
 
                 backup = Clone(merged);
+                Print(backup);
                 row = 0;
                 seat = 0;
             }
 
             var occupied = CountOccupiedSeats(backup);
             Console.WriteLine(occupied);
+        }
+
+        private static void Print(IEnumerable<string> list)
+        {
+            foreach (var item in list)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine();
         }
 
         private static int CountOccupiedSeats(IEnumerable<string> backup)
@@ -333,7 +343,7 @@ namespace Day11
                             next = backup[row][++cent];
                         }
 
-                        if (cent == MaxSeats && next == '.')
+                        if (next == '.')
                             next = 'L';
                         switch (next)
                         {
@@ -371,7 +381,7 @@ namespace Day11
                             next = backup[++cent2][++cent];
                         }
 
-                        if (cent == MaxSeats && next == '.' && cent2 == MaxRows)
+                        if (next == '.')
                             next = 'L';
                         switch (next)
                         {
@@ -408,7 +418,7 @@ namespace Day11
                             next = backup[++cent][seat];
                         }
 
-                        if (cent == MaxRows && next == '.')
+                        if (next == '.')
                             next = 'L';
                         switch (next)
                         {
@@ -446,7 +456,7 @@ namespace Day11
                             next = backup[++cent2][--cent];
                         }
 
-                        if (cent == 0 && next == '.' && cent2 == MaxRows)
+                        if (next == '.')
                             next = 'L';
                         switch (next)
                         {
@@ -483,7 +493,7 @@ namespace Day11
                             next = backup[row][--cent];
                         }
 
-                        if (cent == 0 && next == '.')
+                        if (next == '.')
                             next = 'L';
                         switch (next)
                         {
@@ -521,7 +531,7 @@ namespace Day11
                             next = backup[--cent2][--cent];
                         }
 
-                        if (cent == 0 && next == '.' && cent2 == 0)
+                        if (next == '.')
                             next = 'L';
                         switch (next)
                         {
@@ -558,7 +568,7 @@ namespace Day11
                             next = backup[--cent][seat];
                         }
 
-                        if (cent == 0 && next == '.')
+                        if (next == '.')
                             next = 'L';
                         switch (next)
                         {
@@ -596,7 +606,7 @@ namespace Day11
                             next = backup[--cent2][++cent];
                         }
 
-                        if (cent == MaxSeats && next == '.' && cent2 == 0)
+                        if (next == '.')
                             next = 'L';
                         switch (next)
                         {
