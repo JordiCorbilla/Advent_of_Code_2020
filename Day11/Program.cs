@@ -62,7 +62,7 @@ namespace Day11
 
         private static void Part2()
         {
-            var seating = File.ReadAllLines("input.txt").ToList();
+            var seating = File.ReadAllLines("inputtest.txt").ToList();
 
             var seat = -1;
             var row = 0;
@@ -319,7 +319,7 @@ namespace Day11
             if (seat + 1 <= MaxSeats)
             {
                 int cent = seat;
-                var next = backup[row][cent + 1];
+                var next = backup[row][++cent];
                 max++;
 
                 switch (next)
@@ -328,10 +328,21 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        cent++;
-                        while (next == '.' || cent <= MaxSeats)
+                        while (next == '.' && cent <= MaxSeats)
                         {
+                            next = backup[row][++cent];
+                        }
 
+                        if (cent > MaxSeats)
+                            next = 'L';
+                        switch (next)
+                        {
+                            case 'L': 
+                                empty++;
+                                break;
+                            case '#': 
+                                occupied++;
+                                break;
                         }
                         break;
                     case '#':
