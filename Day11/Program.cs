@@ -310,7 +310,7 @@ namespace Day11
             var currentSeat = backup[row][seat];
             if (currentSeat == '.') return backup;
             var empty = 0;
-            var max = 0;
+            var visited = 0;
             var occupied = 0;
 
             // XXX
@@ -318,9 +318,9 @@ namespace Day11
             // XXX
             if (seat + 1 <= MaxSeats)
             {
-                int cent = seat;
+                var cent = seat;
                 var next = backup[row][++cent];
-                max++;
+                visited++;
 
                 switch (next)
                 {
@@ -328,12 +328,12 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent <= MaxSeats)
+                        while (next == '.' && cent < MaxSeats)
                         {
                             next = backup[row][++cent];
                         }
 
-                        if (cent > MaxSeats)
+                        if (cent == MaxSeats)
                             next = 'L';
                         switch (next)
                         {
@@ -355,7 +355,7 @@ namespace Day11
             // XXO
             if (seat + 1 <= MaxSeats && row + 1 <= MaxRows)
             {
-                max++;
+                visited++;
                 var next = backup[row + 1][seat + 1];
                 switch (next)
                 {
@@ -373,7 +373,7 @@ namespace Day11
             // XOX
             if (row + 1 <= MaxRows)
             {
-                max++;
+                visited++;
                 var next = backup[row + 1][seat];
                 switch (next)
                 {
@@ -391,7 +391,7 @@ namespace Day11
             // OXX
             if (seat - 1 >= 0 && row + 1 <= MaxRows)
             {
-                max++;
+                visited++;
                 var next = backup[row + 1][seat - 1];
                 switch (next)
                 {
@@ -409,13 +409,32 @@ namespace Day11
             // XXX
             if (seat - 1 >= 0)
             {
-                max++;
-                var next = backup[row][seat - 1];
+                var cent = seat;
+                var next = backup[row][--cent];
+                visited++;
+
                 switch (next)
                 {
                     case 'L':
-                    case '.':
                         empty++;
+                        break;
+                    case '.':
+                        while (next == '.' && cent > 0)
+                        {
+                            next = backup[row][--cent];
+                        }
+
+                        if (cent == 0)
+                            next = 'L';
+                        switch (next)
+                        {
+                            case 'L':
+                                empty++;
+                                break;
+                            case '#':
+                                occupied++;
+                                break;
+                        }
                         break;
                     case '#':
                         occupied++;
@@ -427,7 +446,7 @@ namespace Day11
             // XXX
             if (seat - 1 >= 0 && row - 1 >= 0)
             {
-                max++;
+                visited++;
                 var next = backup[row - 1][seat - 1];
                 switch (next)
                 {
@@ -445,7 +464,7 @@ namespace Day11
             // XXX
             if (row - 1 >= 0)
             {
-                max++;
+                visited++;
                 var next = backup[row - 1][seat];
                 switch (next)
                 {
@@ -463,7 +482,7 @@ namespace Day11
             // XXX
             if (seat + 1 <= MaxSeats && row - 1 >= 0)
             {
-                max++;
+                visited++;
                 var next = backup[row - 1][seat + 1];
                 switch (next)
                 {
@@ -478,7 +497,7 @@ namespace Day11
             }
             switch (currentSeat)
             {
-                case 'L' when max == empty:
+                case 'L' when visited == empty:
                     {
                         var seats = backup[row];
                         var chars = seats.ToCharArray();
@@ -487,7 +506,7 @@ namespace Day11
                         backup[row] = newArrangement;
                         break;
                     }
-                case '#' when occupied >= 4:
+                case '#' when occupied >= 5:
                     {
                         var seats = backup[row];
                         var chars = seats.ToCharArray();
