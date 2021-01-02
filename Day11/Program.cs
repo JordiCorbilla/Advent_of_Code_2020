@@ -318,13 +318,21 @@ namespace Day11
             // XXX
             if (seat + 1 <= MaxSeats)
             {
+                int cent = seat;
+                var next = backup[row][cent + 1];
                 max++;
-                var next = backup[row][seat + 1];
+
                 switch (next)
                 {
                     case 'L':
-                    case '.':
                         empty++;
+                        break;
+                    case '.':
+                        cent++;
+                        while (next == '.' || cent <= MaxSeats)
+                        {
+
+                        }
                         break;
                     case '#':
                         occupied++;
