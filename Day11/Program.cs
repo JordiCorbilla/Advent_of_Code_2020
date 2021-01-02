@@ -333,7 +333,7 @@ namespace Day11
                             next = backup[row][++cent];
                         }
 
-                        if (cent == MaxSeats)
+                        if (cent == MaxSeats && next == '.')
                             next = 'L';
                         switch (next)
                         {
@@ -373,13 +373,32 @@ namespace Day11
             // XOX
             if (row + 1 <= MaxRows)
             {
+                var cent = row;
+                var next = backup[++cent][seat];
                 visited++;
-                var next = backup[row + 1][seat];
+
                 switch (next)
                 {
                     case 'L':
-                    case '.':
                         empty++;
+                        break;
+                    case '.':
+                        while (next == '.' && cent < MaxRows)
+                        {
+                            next = backup[++cent][seat];
+                        }
+
+                        if (cent == MaxRows && next == '.')
+                            next = 'L';
+                        switch (next)
+                        {
+                            case 'L':
+                                empty++;
+                                break;
+                            case '#':
+                                occupied++;
+                                break;
+                        }
                         break;
                     case '#':
                         occupied++;
@@ -424,7 +443,7 @@ namespace Day11
                             next = backup[row][--cent];
                         }
 
-                        if (cent == 0)
+                        if (cent == 0 && next == '.')
                             next = 'L';
                         switch (next)
                         {
