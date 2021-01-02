@@ -24,9 +24,10 @@ namespace Day12
             var moving = Direction.East;
             var east = 0;
             var north = 0;
+            var south = 0;
+            var west = 0;
             foreach (var direction in directions)
             {
-
                 var step = int.Parse(direction.Substring(1));
                 switch(direction[0])
                 {
@@ -34,31 +35,95 @@ namespace Day12
                         north += step;
                         break;
                     case 'S':
-                        north -= step;
+                        south += step;
                         break;
                     case 'E':
                         east += step;
                         break;
                     case 'W':
-                        east -= step;
+                        west += step;
                         break;
                     case 'L':
-                        moving = step switch
+                        switch (moving)
                         {
-                            90 => Direction.North,
-                            180 => Direction.West,
-                            270 => Direction.South,
-                            _ => moving
-                        };
+                            case Direction.East:
+                                moving = step switch
+                                {
+                                    90 => Direction.North,
+                                    180 => Direction.West,
+                                    270 => Direction.South,
+                                    _ => moving
+                                };
+                                break;
+                            case Direction.West:
+                                moving = step switch
+                                {
+                                    90 => Direction.South,
+                                    180 => Direction.East,
+                                    270 => Direction.North,
+                                    _ => moving
+                                };
+                                break;
+                            case Direction.North:
+                                moving = step switch
+                                {
+                                    90 => Direction.West,
+                                    180 => Direction.South,
+                                    270 => Direction.East,
+                                    _ => moving
+                                };
+                                break;
+                            case Direction.South:
+                                moving = step switch
+                                {
+                                    90 => Direction.East,
+                                    180 => Direction.North,
+                                    270 => Direction.West,
+                                    _ => moving
+                                };
+                                break;
+                        }
                         break;
                     case 'R':
-                        moving = step switch
+                        switch (moving)
                         {
-                            90 => Direction.South,
-                            180 => Direction.West,
-                            270 => Direction.North,
-                            _ => moving
-                        };
+                            case Direction.East:
+                                moving = step switch
+                                {
+                                    90 => Direction.South,
+                                    180 => Direction.West,
+                                    270 => Direction.North,
+                                    _ => moving
+                                };
+                                break;
+                            case Direction.West:
+                                moving = step switch
+                                {
+                                    90 => Direction.North,
+                                    180 => Direction.East,
+                                    270 => Direction.South,
+                                    _ => moving
+                                };
+                                break;
+                            case Direction.North:
+                                moving = step switch
+                                {
+                                    90 => Direction.East,
+                                    180 => Direction.South,
+                                    270 => Direction.West,
+                                    _ => moving
+                                };
+                                break;
+                            case Direction.South:
+                                moving = step switch
+                                {
+                                    90 => Direction.West,
+                                    180 => Direction.North,
+                                    270 => Direction.East,
+                                    _ => moving
+                                };
+                                break;
+                        }
                         break;
                     case 'F':
                         switch (moving)
@@ -67,21 +132,21 @@ namespace Day12
                                 east += step;
                                 break;
                             case Direction.West:
-                                east -= step;
+                                west += step;
                                 break;
                             case Direction.North:
                                 north += step;
                                 break;
                             case Direction.South:
-                                north -= step;
+                                south += step;
                                 break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
                         }
                         break;
                 }
             }
-            Console.WriteLine($"East: {east}, North: {north}, Manhattan Distance: {Math.Abs(east)+Math.Abs(north)}");
+            Console.WriteLine($"East: {east}, North: {north}");
+            Console.WriteLine($"West: {west}, South: {south}");
+            Console.WriteLine($"Manhattan Distance: {Math.Abs(east- west) + Math.Abs(north- south)}");
         }
     }
 }
