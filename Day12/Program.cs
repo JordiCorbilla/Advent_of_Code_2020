@@ -16,6 +16,7 @@ namespace Day12
         static void Main()
         {
             Part1();
+            Console.WriteLine();
             Part2();
         }
 
@@ -151,14 +152,14 @@ namespace Day12
         }
         public static void Part2()
         {
-            var directions = File.ReadAllLines("inputtest.txt").ToList();
-            var wayPointEast = 10;
-            var wayPointNorth = 1;
-            var shipEast = 0;
-            var shipNorth = 0;
+            var directions = File.ReadAllLines("input.txt").ToList();
+            var wayPointEast = 10.0;
+            var wayPointNorth = 1.0;
+            var shipEast = 0.0;
+            var shipNorth = 0.0;
             foreach (var direction in directions)
             {
-                var step = int.Parse(direction.Substring(1));
+                var step = double.Parse(direction.Substring(1));
                 switch (direction[0])
                 {
                     case 'N':
@@ -178,16 +179,23 @@ namespace Day12
                         // x' = x cos(a) - y sin(a)
                         // y' = x sin(a) - y cos(a)
                         // where a is the angle to rotate anti-clockwise
-                        wayPointEast = wayPointEast * (int)Math.Cos(step) - wayPointNorth * (int)Math.Sin(step);
-                        wayPointNorth = wayPointEast * (int)Math.Sin(step) + wayPointNorth * (int)Math.Cos(step);
+                        var rads = Math.PI / 180 * step;
+                        var prevEast = wayPointEast;
+                        var prevNorth = wayPointNorth;
+                        wayPointEast = (prevEast * Math.Cos(rads)) - (prevNorth * Math.Sin(rads));
+                        wayPointNorth = (prevEast * Math.Sin(rads)) + (prevNorth * Math.Cos(rads));
                         break;
                     case 'R':
                         // This is the case for a 2D rotation
                         // x' = x cos(-a) - y sin(-a)
                         // y' = x sin(-a) - y cos(-a)
                         // where a is the angle to rotate clockwise
-                        wayPointEast = wayPointEast * (int)Math.Cos(step*-1) - wayPointNorth * (int)Math.Sin(step*-1);
-                        wayPointNorth = wayPointEast * (int)Math.Sin(step*-1) + wayPointNorth * (int)Math.Cos(step*-1);
+                        step *= -1;
+                        double radians = Math.PI / 180 * step;
+                        var previousEast = wayPointEast;
+                        var previousNorth = wayPointNorth;
+                        wayPointEast = (previousEast * Math.Cos(radians)) - (previousNorth * Math.Sin(radians));
+                        wayPointNorth = (previousEast * Math.Sin(radians)) + (previousNorth * Math.Cos(radians));
                         break;
                     case 'F':
                         shipEast += step * wayPointEast;
