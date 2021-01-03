@@ -151,133 +151,52 @@ namespace Day12
         }
         public static void Part2()
         {
-            var directions = File.ReadAllLines("input.txt").ToList();
-            var moving = Direction.East;
-            var east = 0;
-            var north = 0;
-            var south = 0;
-            var west = 0;
+            var directions = File.ReadAllLines("inputtest.txt").ToList();
+            var wayPointEast = 10;
+            var wayPointNorth = 1;
+            var shipEast = 0;
+            var shipNorth = 0;
             foreach (var direction in directions)
             {
                 var step = int.Parse(direction.Substring(1));
                 switch (direction[0])
                 {
                     case 'N':
-                        north += step;
+                        wayPointNorth += step;
                         break;
                     case 'S':
-                        south += step;
+                        wayPointNorth -= step;
                         break;
                     case 'E':
-                        east += step;
+                        wayPointEast += step;
                         break;
                     case 'W':
-                        west += step;
+                        wayPointEast -= step;
                         break;
                     case 'L':
-                        switch (moving)
-                        {
-                            case Direction.East:
-                                moving = step switch
-                                {
-                                    90 => Direction.North,
-                                    180 => Direction.West,
-                                    270 => Direction.South,
-                                    _ => moving
-                                };
-                                break;
-                            case Direction.West:
-                                moving = step switch
-                                {
-                                    90 => Direction.South,
-                                    180 => Direction.East,
-                                    270 => Direction.North,
-                                    _ => moving
-                                };
-                                break;
-                            case Direction.North:
-                                moving = step switch
-                                {
-                                    90 => Direction.West,
-                                    180 => Direction.South,
-                                    270 => Direction.East,
-                                    _ => moving
-                                };
-                                break;
-                            case Direction.South:
-                                moving = step switch
-                                {
-                                    90 => Direction.East,
-                                    180 => Direction.North,
-                                    270 => Direction.West,
-                                    _ => moving
-                                };
-                                break;
-                        }
+                        // This is the case for a 2D rotation
+                        // x' = x cos(a) - y sin(a)
+                        // y' = x sin(a) - y cos(a)
+                        // where a is the angle to rotate anti-clockwise
+                        wayPointEast = wayPointEast * (int)Math.Cos(step) - wayPointNorth * (int)Math.Sin(step);
+                        wayPointNorth = wayPointEast * (int)Math.Sin(step) + wayPointNorth * (int)Math.Cos(step);
                         break;
                     case 'R':
-                        switch (moving)
-                        {
-                            case Direction.East:
-                                moving = step switch
-                                {
-                                    90 => Direction.South,
-                                    180 => Direction.West,
-                                    270 => Direction.North,
-                                    _ => moving
-                                };
-                                break;
-                            case Direction.West:
-                                moving = step switch
-                                {
-                                    90 => Direction.North,
-                                    180 => Direction.East,
-                                    270 => Direction.South,
-                                    _ => moving
-                                };
-                                break;
-                            case Direction.North:
-                                moving = step switch
-                                {
-                                    90 => Direction.East,
-                                    180 => Direction.South,
-                                    270 => Direction.West,
-                                    _ => moving
-                                };
-                                break;
-                            case Direction.South:
-                                moving = step switch
-                                {
-                                    90 => Direction.West,
-                                    180 => Direction.North,
-                                    270 => Direction.East,
-                                    _ => moving
-                                };
-                                break;
-                        }
+                        // This is the case for a 2D rotation
+                        // x' = x cos(-a) - y sin(-a)
+                        // y' = x sin(-a) - y cos(-a)
+                        // where a is the angle to rotate clockwise
+                        wayPointEast = wayPointEast * (int)Math.Cos(step*-1) - wayPointNorth * (int)Math.Sin(step*-1);
+                        wayPointNorth = wayPointEast * (int)Math.Sin(step*-1) + wayPointNorth * (int)Math.Cos(step*-1);
                         break;
                     case 'F':
-                        switch (moving)
-                        {
-                            case Direction.East:
-                                east += step;
-                                break;
-                            case Direction.West:
-                                west += step;
-                                break;
-                            case Direction.North:
-                                north += step;
-                                break;
-                            case Direction.South:
-                                south += step;
-                                break;
-                        }
+                        shipEast += step * wayPointEast;
+                        shipNorth += step * wayPointNorth;
                         break;
                 }
             }
-            Console.WriteLine($"East: {east}, North: {north}");
-            Console.WriteLine($"West: {west}, South: {south}");
-            Console.WriteLine($"Manhattan Distance: {Math.Abs(east - west) + Math.Abs(north - south)}");
+            Console.WriteLine($"East: {shipEast}, North: {shipNorth}");
+            Console.WriteLine($"Manhattan Distance: {Math.Abs(shipEast) + Math.Abs(shipNorth)}");
         }
     }
 }
