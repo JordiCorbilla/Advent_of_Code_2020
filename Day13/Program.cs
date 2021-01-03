@@ -8,12 +8,21 @@ namespace Day13
     public class Bus {
         public int TimeStamp { get; set; }
         public bool Marked { get; set; }
+        public int T { get; set; }
 
         public Bus(string pos, long index)
         {
             TimeStamp = int.Parse(pos);
             if (index % TimeStamp == 0)
                 Marked = true;
+        }
+
+        public Bus(string pos, long index, int t)
+        {
+            TimeStamp = int.Parse(pos);
+            if (index % TimeStamp == 0)
+                Marked = true;
+            T = t;
         }
     }
     class Program
@@ -27,7 +36,22 @@ namespace Day13
 
         private static void Part2()
         {
-            
+            var file = File.ReadAllLines("inputtest.txt");
+            var buses = file[1].Split(',');
+            long pos = 0;
+            while (true)
+            {
+                var busesList = new List<Bus>();
+                for (int i = 0; i < buses.Length; i++)
+                {
+                    if (buses[i] != "x")
+                    {
+                        var b = new Bus(buses[i], pos, i);
+                    }
+                }
+
+                pos++;
+            }
         }
 
         private static void Part1()
@@ -52,9 +76,9 @@ namespace Day13
 
             var trueFound = 0;
             var busLine = 0;
-            for (long i = timestamp - 50; i < timestamp; i++)
+            for (var i = timestamp - 50; i < timestamp; i++)
             {
-                string s = "";
+                var s = "";
                 foreach (var p in schedule[(int) i])
                 {
                     s += $"{p.TimeStamp}({p.Marked}), ";
