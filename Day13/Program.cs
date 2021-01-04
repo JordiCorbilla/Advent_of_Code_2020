@@ -31,7 +31,7 @@ namespace Day13
     {
         static void Main()
         {
-            Part1();
+            //Part1();
             Console.WriteLine();
             Part2();
         }
@@ -52,7 +52,10 @@ namespace Day13
                         var b = new Bus(buses[i], pos, i);
                         if (start)
                         {
+                            if (b.Marked && b.T == pos)
+                            {
 
+                            }
                         }
                         
                         if (i == 0 && b.Marked && !start)
