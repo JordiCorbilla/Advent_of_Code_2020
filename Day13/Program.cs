@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using Microsoft.VisualBasic;
 
 namespace Day13
 {
@@ -39,6 +41,7 @@ namespace Day13
             var file = File.ReadAllLines("inputtest.txt");
             var buses = file[1].Split(',');
             long pos = 0;
+            var start = false;
             while (true)
             {
                 var busesList = new List<Bus>();
@@ -47,6 +50,15 @@ namespace Day13
                     if (buses[i] != "x")
                     {
                         var b = new Bus(buses[i], pos, i);
+                        if (start)
+                        {
+
+                        }
+                        
+                        if (i == 0 && b.Marked && !start)
+                        {
+                            start = true;
+                        }
                     }
                 }
 
