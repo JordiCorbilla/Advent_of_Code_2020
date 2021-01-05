@@ -31,7 +31,7 @@ namespace Day13
     {
         static void Main()
         {
-            //Part1();
+            Part1();
             Console.WriteLine();
             Part2();
         }
@@ -44,28 +44,29 @@ namespace Day13
             var start = false;
             while (true)
             {
-                var busesList = new List<Bus>();
+                //var busesList = new List<Bus>();
+                string s = $"{pos} ->";
                 for (int i = 0; i < buses.Length; i++)
                 {
                     if (buses[i] != "x")
                     {
                         var b = new Bus(buses[i], pos, i);
-                        if (start)
+                        if (b.Marked)
                         {
-                            if (b.Marked && b.T == pos)
-                            {
-
-                            }
+                            s += "D,";
                         }
-                        
-                        if (i == 0 && b.Marked && !start)
+                        else
                         {
-                            start = true;
+                            s += ".,";
                         }
                     }
                 }
 
+                Console.WriteLine(s);
+
                 pos++;
+                if (pos > 3500)
+                    break;
             }
         }
 
