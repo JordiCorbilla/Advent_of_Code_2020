@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using Microsoft.VisualBasic;
 
 namespace Day13
 {
@@ -11,6 +9,7 @@ namespace Day13
         public int TimeStamp { get; set; }
         public bool Marked { get; set; }
         public int T { get; set; }
+        public bool M { get; set; }
 
         public Bus(string pos, long index)
         {
@@ -42,9 +41,21 @@ namespace Day13
             var buses = file[1].Split(',');
             long pos = 0;
             var start = false;
+            long found = 0;
+
+            var markList = new List<Bus>();
+            for (int i = 1; i < buses.Length; i++)
+            {
+                if (buses[i] != "x")
+                {
+                    var b = new Bus(buses[i], 0, i);
+                    markList.Add(b);
+                }
+            }
+
             while (true)
             {
-                //var busesList = new List<Bus>();
+                var busesList = new List<Bus>();
                 string s = $"{pos} ->";
                 for (int i = 0; i < buses.Length; i++)
                 {
@@ -59,14 +70,61 @@ namespace Day13
                         {
                             s += ".,";
                         }
+                        busesList.Add(b);
+                    }
+                }
+                Console.WriteLine(s);
+
+                if (pos == 3416)
+                {
+                    var f = "d";
+                    Console.WriteLine(f);
+                }
+
+                if (start)
+                {
+                    foreach (var t in markList)
+                    {
+                        if (t.Marked && t.T == (pos - found))
+                            t.M = true;
                     }
                 }
 
-                Console.WriteLine(s);
+
+                if (busesList[0].Marked)
+                {
+                    start = true;
+                    found = pos;
+                }
+
+                
+
+                var complete = true;
+                foreach (var item in markList)
+                {
+                    complete = complete & item.M;
+                }
+
+                if (complete)
+                {
+                    Console.WriteLine(found);
+                    break;
+                }
+
+                if (!start)
+                {
+                    foreach (var bus in markList)
+                    {
+                        bus.M = false;
+                    }
+                }
+
+
+
 
                 pos++;
-                if (pos > 3500)
-                    break;
+                //if (pos > 3500)
+                //    break;
             }
         }
 
