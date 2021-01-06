@@ -100,11 +100,14 @@ namespace Day13
                 if (busesList[0].Marked)
                 {
                     start = true;
+                    found = pos;
                     if (Compare(memory, snapshot))
+                    {
+                        Console.WriteLine($"Found in {found-memory.Count}");
                         break;
+                    }
                     memory.Clear();
                     memory.Add(m);
-                    found = pos;
                 }
 
                 
@@ -143,13 +146,13 @@ namespace Day13
             string one = "";
             foreach (var s in item)
             {
-                one += s;
+                one += s + "-";
             }
 
             string two = "";
             foreach (var s in memory)
             {
-                two += s;
+                two += s + "-";
             }
 
             return one.Contains(two);
