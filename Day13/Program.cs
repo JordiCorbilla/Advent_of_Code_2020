@@ -37,12 +37,10 @@ namespace Day13
 
         private static void Part2()
         {
-            var file = File.ReadAllLines("inputtest.txt");
+            var file = File.ReadAllLines("inputtest2.txt");
             var buses = file[1].Split(',');
             long pos = 0;
-            var start = false;
             long found = 0;
-
             var markList = new List<Bus>();
             for (int i = 1; i < buses.Length; i++)
             {
@@ -53,7 +51,8 @@ namespace Day13
                 }
             }
 
-            List<string> snapshot = new List<string> {"D..", "...", ".D.", "..D"};
+            //List<string> snapshot = new List<string> {"D..", "...", ".D.", "..D"};
+            List<string> snapshot = new List<string> { "D....", ".D...", ".....", "..D..", "...D.", "D....D" };
             List<string> memory = new List<string>();
             while (true)
             {
@@ -78,66 +77,28 @@ namespace Day13
                         busesList.Add(b);
                     }
                 }
-                Console.WriteLine(s);
+                //Console.WriteLine(s);
                 memory.Add(m);
 
-                if (pos == 3416)
-                {
-                    var f = "d";
-                    Console.WriteLine(f);
-                }
-
-                //if (start)
+                //if (pos == 3416)
                 //{
-                //    foreach (var t in markList)
-                //    {
-                //        if (t.Marked && t.T == (pos - found))
-                //            t.M = true;
-                //    }
+                //    var f = "d";
+                //    Console.WriteLine(f);
                 //}
-
 
                 if (busesList[0].Marked)
                 {
-                    start = true;
                     found = pos;
                     if (Compare(memory, snapshot))
                     {
-                        Console.WriteLine($"Found in {found-memory.Count}");
+                        Console.WriteLine($"Found in {found-(memory.Count+1)}");
                         break;
                     }
                     memory.Clear();
                     memory.Add(m);
                 }
 
-                
-
-                //var complete = true;
-                //foreach (var item in markList)
-                //{
-                //    complete = complete & item.M;
-                //}
-
-                //if (complete)
-                //{
-                //    Console.WriteLine(found);
-                //    break;
-                //}
-
-                //if (!start)
-                //{
-                //    foreach (var bus in markList)
-                //    {
-                //        bus.M = false;
-                //    }
-                //}
-
-
-
-
                 pos++;
-                //if (pos > 3500)
-                //    break;
             }
         }
 
