@@ -30,8 +30,8 @@ namespace Day13
     {
         static void Main()
         {
-            Part1();
-            Console.WriteLine();
+            //Part1();
+            //Console.WriteLine();
             Part2();
         }
 
@@ -52,7 +52,7 @@ namespace Day13
             }
 
             //List<string> snapshot = new List<string> {"D..", "...", ".D.", "..D"};
-            List<string> snapshot = new List<string> { "D....", ".D...", ".....", "..D..", "...D.", "D....D" };
+            List<string> snapshot = new List<string> { "D....", ".D...", ".....", ".....", "..D..", ".....", "...D.", "D...D" };
             List<string> memory = new List<string>();
             while (true)
             {
@@ -80,7 +80,7 @@ namespace Day13
                 //Console.WriteLine(s);
                 memory.Add(m);
 
-                //if (pos == 3416)
+                //if (pos == 1068780)
                 //{
                 //    var f = "d";
                 //    Console.WriteLine(f);
@@ -91,7 +91,7 @@ namespace Day13
                     found = pos;
                     if (Compare(memory, snapshot))
                     {
-                        Console.WriteLine($"Found in {found-(memory.Count+1)}");
+                        Console.WriteLine($"Found in {(found-memory.Count)+1}");
                         break;
                     }
                     memory.Clear();
