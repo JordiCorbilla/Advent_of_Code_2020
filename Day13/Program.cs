@@ -53,10 +53,13 @@ namespace Day13
                 }
             }
 
+            List<string> snapshot = new List<string> {"D..", "...", ".D.", "..D"};
+            List<string> memory = new List<string>();
             while (true)
             {
                 var busesList = new List<Bus>();
                 string s = $"{pos} ->";
+                string m = "";
                 for (int i = 0; i < buses.Length; i++)
                 {
                     if (buses[i] != "x")
@@ -64,16 +67,19 @@ namespace Day13
                         var b = new Bus(buses[i], pos, i);
                         if (b.Marked)
                         {
-                            s += "D,";
+                            s += "D";
+                            m += "D";
                         }
                         else
                         {
-                            s += ".,";
+                            s += ".";
+                            m += ".";
                         }
                         busesList.Add(b);
                     }
                 }
                 Console.WriteLine(s);
+                memory.Add(m);
 
                 if (pos == 3416)
                 {
@@ -81,43 +87,47 @@ namespace Day13
                     Console.WriteLine(f);
                 }
 
-                if (start)
-                {
-                    foreach (var t in markList)
-                    {
-                        if (t.Marked && t.T == (pos - found))
-                            t.M = true;
-                    }
-                }
+                //if (start)
+                //{
+                //    foreach (var t in markList)
+                //    {
+                //        if (t.Marked && t.T == (pos - found))
+                //            t.M = true;
+                //    }
+                //}
 
 
                 if (busesList[0].Marked)
                 {
                     start = true;
+                    if (Compare(memory, snapshot))
+                        break;
+                    memory.Clear();
+                    memory.Add(m);
                     found = pos;
                 }
 
                 
 
-                var complete = true;
-                foreach (var item in markList)
-                {
-                    complete = complete & item.M;
-                }
+                //var complete = true;
+                //foreach (var item in markList)
+                //{
+                //    complete = complete & item.M;
+                //}
 
-                if (complete)
-                {
-                    Console.WriteLine(found);
-                    break;
-                }
+                //if (complete)
+                //{
+                //    Console.WriteLine(found);
+                //    break;
+                //}
 
-                if (!start)
-                {
-                    foreach (var bus in markList)
-                    {
-                        bus.M = false;
-                    }
-                }
+                //if (!start)
+                //{
+                //    foreach (var bus in markList)
+                //    {
+                //        bus.M = false;
+                //    }
+                //}
 
 
 
@@ -126,6 +136,23 @@ namespace Day13
                 //if (pos > 3500)
                 //    break;
             }
+        }
+
+        private static bool Compare(List<string> item, List<string> memory)
+        {
+            string one = "";
+            foreach (var s in item)
+            {
+                one += s;
+            }
+
+            string two = "";
+            foreach (var s in memory)
+            {
+                two += s;
+            }
+
+            return one.Contains(two);
         }
 
         private static void Part1()
