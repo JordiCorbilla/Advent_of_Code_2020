@@ -30,14 +30,14 @@ namespace Day13
     {
         static void Main()
         {
-            //Part1();
-            //Console.WriteLine();
+            Part1();
+            Console.WriteLine();
             Part2();
         }
 
         private static void Part2()
         {
-            var file = File.ReadAllLines("inputtest6.txt");
+            var file = File.ReadAllLines("input.txt");
             var buses = file[1].Split(',');
             long pos = 0;
 
@@ -52,14 +52,12 @@ namespace Day13
                 if (b != "x")
                 {
                     a[r] = 'D';
-                    for (int i = 0; i < buses.Length; i++)
+                    for (var i = 0; i < buses.Length; i++)
                     {
-                        if (buses[i] != "x")
+                        if (buses[i] == "x") continue;
+                        if (snapshot.Count == int.Parse(buses[i]))
                         {
-                            if (snapshot.Count == int.Parse(buses[i]))
-                            {
-                                a[i] = 'D';
-                            }
+                            a[i] = 'D';
                         }
                     }
                     
@@ -72,14 +70,11 @@ namespace Day13
                 }
             }
 
-
-            //List<string> snapshot = new List<string> {"D..", "...", ".D.", "..D"};
-            //var snapshot = new List<string> { "D....", ".D...", ".....", ".....", "..D..", ".....", "...D.", "D...D" };
             var memory = new List<string>();
             while (true)
             {
                 var busesList = new List<Bus>();
-                string m = "";
+                var m = "";
                 for (var i = 0; i < buses.Length; i++)
                 {
                     if (buses[i] == "x") continue;
@@ -96,12 +91,6 @@ namespace Day13
                 }
 
                 memory.Add(m);
-
-                //if (pos == 1068780)
-                //{
-                //    var f = "d";
-                //    Console.WriteLine(f);
-                //}
 
                 if (busesList[^1].Marked)
                 {
@@ -137,12 +126,7 @@ namespace Day13
             timestamp += 50;
             for (long i = 0; i < timestamp; i++)
             {
-                var busesList = new List<Bus>();
-                foreach (var t in enumerable)
-                {
-                    var bus = new Bus(t, i);
-                    busesList.Add(bus);
-                }
+                var busesList = enumerable.Select(t => new Bus(t, i)).ToList();
                 schedule.Add(busesList);
             }
 
@@ -154,11 +138,9 @@ namespace Day13
                 foreach (var p in schedule[(int) i])
                 {
                     s += $"{p.TimeStamp}({p.Marked}), ";
-                    if (p.Marked && trueFound == 0)
-                    {
-                        trueFound = (int)i;
-                        busLine = p.TimeStamp;
-                    }
+                    if (!p.Marked || trueFound != 0) continue;
+                    trueFound = (int)i;
+                    busLine = p.TimeStamp;
                 }
                 Console.WriteLine($"{i}, {s}");
             }
