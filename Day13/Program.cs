@@ -37,7 +37,7 @@ namespace Day13
 
         private static void Part2()
         {
-            var file = File.ReadAllLines("inputtest.txt");
+            var file = File.ReadAllLines("inputtest6.txt");
             var buses = file[1].Split(',');
             long pos = 0;
 
@@ -54,9 +54,12 @@ namespace Day13
                     a[r] = 'D';
                     for (int i = 0; i < buses.Length; i++)
                     {
-                        if (snapshot.Count == int.Parse(buses[i]))
+                        if (buses[i] != "x")
                         {
-                            a[i] = 'D';
+                            if (snapshot.Count == int.Parse(buses[i]))
+                            {
+                                a[i] = 'D';
+                            }
                         }
                     }
                     
@@ -105,7 +108,7 @@ namespace Day13
                     var found = pos;
                     if (Compare(memory, snapshot))
                     {
-                        Console.WriteLine($"Found in {(found-memory.Count)+1}");
+                        Console.WriteLine($"Found in {(found-snapshot.Count)+1}");
                         break;
                     }
                     memory.Clear();
