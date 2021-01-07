@@ -35,6 +35,18 @@ namespace Day13
             Part2();
         }
 
+        /// <summary>
+        /// For this part, I first generate the solution (what we are trying to look for) and call it snapshot
+        /// e.g.:
+        /// 
+        /// D...
+        /// .D..
+        /// ..D.
+        /// ...D
+        ///
+        /// Then, I allow the system to run and when I find that the last bus of the list is due to stop, I compare the
+        /// current snapshot against the solution. If they match, then we found what we were looking for.
+        /// </summary>
         private static void Part2()
         {
             var file = File.ReadAllLines("input.txt");
