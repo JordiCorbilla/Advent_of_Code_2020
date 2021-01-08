@@ -49,7 +49,7 @@ namespace Day13
         /// </summary>
         private static void Part2()
         {
-            var file = File.ReadAllLines("inputtest4.txt");
+            var file = File.ReadAllLines("input.txt");
             var buses = file[1].Split(',');
             long pos = 0;
 
