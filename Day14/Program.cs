@@ -9,14 +9,55 @@ namespace Day14
     {
         static void Main()
         {
-            Part1();
-            Console.WriteLine();
+            //Part1();
+            //Console.WriteLine();
             Part2();
         }
 
         private static void Part2()
         {
-            
+            var file = File.ReadAllLines("input.txt");
+
+            var currentMask = "";
+            Dictionary<long, long> memory = new Dictionary<long, long>();
+            foreach (var row in file)
+            {
+                if (row.Contains("mask ="))
+                {
+                    currentMask = row.Replace("mask = ", "");
+                }
+                //mem[8] = 11
+                if (row.Contains("mem["))
+                {
+                    var mem = row.Replace("mem[", "").Replace("] = ", ",").Split(",");
+                    long pos = long.Parse(mem[0]);
+                    long value = long.Parse(mem[1]);
+
+                    var decompose = FloatingDecoderCombinations(currentMask);
+
+                    long acc = 0;
+                    foreach (var mask in decompose)
+                    {
+                        acc += BitMaskV2(mask, ToBase36(value));
+                    }
+
+                    if (memory.ContainsKey(pos))
+                    {
+                        memory[pos] = acc;
+                    }
+                    else
+                    {
+                        memory.Add(pos, acc);
+                    }
+                }
+            }
+
+            long acc2 = 0;
+            foreach (var item in memory)
+            {
+                acc2 += item.Value;
+            }
+            Console.WriteLine(acc2);
         }
 
         private static void Part1()
@@ -96,20 +137,30 @@ namespace Day14
             return FromBase36(new string(result));
         }
 
+        private static long BitMaskV2(string mask, string base36)
+        {
+            var result = mask.ToCharArray();
+            for (int i = 0; i < mask.Length; i++)
+            {
+                if (mask[i] == '1')
+                    result[i] = base36[i];
+            }
+
+            return FromBase36(new string(result));
+        }
+
         private static List<string> FloatingDecoderCombinations(string mask)
         {
-            string processing = "$"+mask;
-            var sequence = new List<string>();
-            sequence.Add(processing);
+            var sequence = new List<string> {mask};
 
             while (true)
             {
-                var notVisited = sequence.Where(x => x.StartsWith("$"));
                 var generated = new List<string>();
-                foreach (var m in notVisited)
+                foreach (var m in sequence)
                 {
                     var chars = m.ToCharArray();
-                    for (int i = 0; i < m.Length; i++)
+
+                    for (var i = 0; i < m.Length; i++)
                     {
                         if (m[i] == 'X')
                         {
@@ -120,9 +171,21 @@ namespace Day14
                             break;
                         }
                     }
-                }
 
+                }
+                sequence.Clear();
+                sequence.AddRange(generated);
+
+                if (!ContainsX(sequence))
+                    break;
             }
-        } 
+
+            return sequence;
+        }
+
+        private static bool ContainsX(List<string> list)
+        {
+            return list.Any(x => x.Contains("X"));
+        }
     }
 }
