@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 
 namespace Day14
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Part1();
             Console.WriteLine();
@@ -21,7 +20,7 @@ namespace Day14
 
         private static void Part1()
         {
-            var file = File.ReadAllLines("inputtest.txt");
+            var file = File.ReadAllLines("input.txt");
             var currentMask = "";
             Dictionary<long, long> memory = new Dictionary<long, long>();
             foreach (var row in file)
@@ -72,11 +71,13 @@ namespace Day14
 
         private static long FromBase36(string base36)
         {
-            double exponent = 36;
+            int exponent = 35;
             double result = 0;
             foreach (var digit in base36)
             {
-                result += Math.Pow((double)2, exponent--);
+                if (digit == '1')
+                    result += Math.Pow(2, exponent);
+                exponent--;
             }
 
             return (long)result;
