@@ -9,8 +9,8 @@ namespace Day14
     {
         static void Main()
         {
-            //Part1();
-            //Console.WriteLine();
+            Part1();
+            Console.WriteLine();
             Part2();
         }
 
@@ -33,21 +33,21 @@ namespace Day14
                     long pos = long.Parse(mem[0]);
                     long value = long.Parse(mem[1]);
 
-                    var decompose = FloatingDecoderCombinations(currentMask);
+                    var floating = BitMaskV2(currentMask, ToBase36(pos));
 
-                    long acc = 0;
+                    var decompose = FloatingDecoderCombinations(floating);
+
                     foreach (var mask in decompose)
                     {
-                        acc += BitMaskV2(mask, ToBase36(value));
-                    }
-
-                    if (memory.ContainsKey(pos))
-                    {
-                        memory[pos] = acc;
-                    }
-                    else
-                    {
-                        memory.Add(pos, acc);
+                        var address = FromBase36(mask);
+                        if (memory.ContainsKey(address))
+                        {
+                            memory[address] = value;
+                        }
+                        else
+                        {
+                            memory.Add(address, value);
+                        }
                     }
                 }
             }
@@ -137,16 +137,16 @@ namespace Day14
             return FromBase36(new string(result));
         }
 
-        private static long BitMaskV2(string mask, string base36)
+        private static string BitMaskV2(string mask, string base36)
         {
             var result = mask.ToCharArray();
             for (int i = 0; i < mask.Length; i++)
             {
-                if (mask[i] == '1')
+                if (mask[i] == '0')
                     result[i] = base36[i];
             }
 
-            return FromBase36(new string(result));
+            return new string(result);
         }
 
         private static List<string> FloatingDecoderCombinations(string mask)
