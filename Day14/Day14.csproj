@@ -9,6 +9,9 @@
     <None Update="input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="inputtest2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="inputtest.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

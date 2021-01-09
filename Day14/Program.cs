@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Day14
 {
@@ -94,5 +95,34 @@ namespace Day14
 
             return FromBase36(new string(result));
         }
+
+        private static List<string> FloatingDecoderCombinations(string mask)
+        {
+            string processing = "$"+mask;
+            var sequence = new List<string>();
+            sequence.Add(processing);
+
+            while (true)
+            {
+                var notVisited = sequence.Where(x => x.StartsWith("$"));
+                var generated = new List<string>();
+                foreach (var m in notVisited)
+                {
+                    var chars = m.ToCharArray();
+                    for (int i = 0; i < m.Length; i++)
+                    {
+                        if (m[i] == 'X')
+                        {
+                            chars[i] = '0';
+                            generated.Add(new string(chars));
+                            chars[i] = '1';
+                            generated.Add(new string(chars));
+                            break;
+                        }
+                    }
+                }
+
+            }
+        } 
     }
 }
