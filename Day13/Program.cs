@@ -30,8 +30,8 @@ namespace Day13
     {
         static void Main()
         {
-            Part1();
-            Console.WriteLine();
+            //Part1();
+            //Console.WriteLine();
             Part2();
         }
 
@@ -82,6 +82,10 @@ namespace Day13
                 }
             }
 
+            var snapshotFlat = "";
+            foreach (var s in snapshot) 
+                snapshotFlat += (s + "-");
+
             var memory = new List<string>();
             while (true)
             {
@@ -105,7 +109,7 @@ namespace Day13
                 if (memory.Count == snapshot.Count)
                 {
                     var found = pos;
-                    if (Compare(memory, snapshot))
+                    if (Compare(memory, snapshotFlat))
                     {
                         Console.WriteLine($"Found in {(found - snapshot.Count) + 1}");
                         break;
@@ -122,11 +126,11 @@ namespace Day13
             }
         }
 
-        private static bool Compare(IEnumerable<string> item, IEnumerable<string> memory)
+        private static bool Compare(IEnumerable<string> item, string snapshot)
         {
-            var one = item.Aggregate("", (current, s) => current + (s + "-"));
-            var two = memory.Aggregate("", (current, s) => current + (s + "-"));
-            return one.Contains(two);
+            var one = "";
+            foreach (var s in item) one += (s + "-");
+            return one == snapshot;
         }
 
         private static void Part1()
