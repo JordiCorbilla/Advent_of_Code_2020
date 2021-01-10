@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -30,8 +31,8 @@ namespace Day13
     {
         static void Main()
         {
-            //Part1();
-            //Console.WriteLine();
+            Part1();
+            Console.WriteLine();
             Part2();
         }
 
@@ -86,9 +87,10 @@ namespace Day13
             foreach (var s in snapshot) 
                 snapshotFlat += (s + "-");
 
-            var memory = new List<string>();
+            var memory = new LinkedList<string>();
             while (true)
             {
+                Stopwatch sp = Stopwatch.StartNew();
                 var m = "";
                 for (var i = 0; i < buses.Length; i++)
                 {
@@ -104,24 +106,27 @@ namespace Day13
                     }
                 }
             
-                memory.Add(m);
+                memory.AddLast(m);
 
                 if (memory.Count == snapshot.Count)
                 {
-                    var found = pos;
-                    if (Compare(memory, snapshotFlat))
+                    if (memory.First.Value == snapshot[0]) //reduce compare hit
                     {
-                        Console.WriteLine($"Found in {(found - snapshot.Count) + 1}");
-                        break;
+                        var found = pos;
+                        if (Compare(memory, snapshotFlat))
+                        {
+                            Console.WriteLine($"Found in {(found - snapshot.Count) + 1}");
+                            break;
+                        }
                     }
-
-                    memory.RemoveAt(0);
+                    memory.RemoveFirst();
                 }
 
                 pos++;
-                if (pos % 1000000 == 0)
+                if (pos % 10000000 == 0)
                 {
-                    Console.WriteLine(pos);
+                    sp.Stop();
+                    Console.WriteLine($"{pos} - {sp.ElapsedMilliseconds}ms");
                 }
             }
         }
