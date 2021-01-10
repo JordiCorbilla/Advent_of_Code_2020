@@ -52,7 +52,7 @@ namespace Day13
         {
             var file = File.ReadAllLines("input.txt");
             var buses = file[1].Split(',');
-            long pos = 100000000000000;
+            long pos = 100000460000000;
 
             //Generate Snapshot
             var items = buses.Where(x => x != "x").ToList().Count;
@@ -88,9 +88,10 @@ namespace Day13
                 snapshotFlat += (s + "-");
 
             var memory = new LinkedList<string>();
+            Stopwatch sp = Stopwatch.StartNew();
+
             while (true)
             {
-                Stopwatch sp = Stopwatch.StartNew();
                 var m = "";
                 for (var i = 0; i < buses.Length; i++)
                 {
@@ -110,7 +111,7 @@ namespace Day13
 
                 if (memory.Count == snapshot.Count)
                 {
-                    if (memory.First.Value == snapshot[0]) //reduce compare hit
+                    if (memory.First.Value == snapshot[0] && memory.Last.Value == snapshot[^1]) //reduce compare hit
                     {
                         var found = pos;
                         if (Compare(memory, snapshotFlat))
@@ -127,6 +128,7 @@ namespace Day13
                 {
                     sp.Stop();
                     Console.WriteLine($"{pos} - {sp.ElapsedMilliseconds}ms");
+                    sp = Stopwatch.StartNew();
                 }
             }
         }
