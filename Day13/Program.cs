@@ -51,7 +51,7 @@ namespace Day13
         {
             var file = File.ReadAllLines("input.txt");
             var buses = file[1].Split(',');
-            long pos = 0;
+            long pos = 100000000000000;
 
             //Generate Snapshot
             var items = buses.Where(x => x != "x").ToList().Count;
@@ -99,7 +99,7 @@ namespace Day13
                         m += ".";
                     }
                 }
-
+            
                 memory.Add(m);
 
                 if (memory.Count == snapshot.Count)
@@ -107,14 +107,15 @@ namespace Day13
                     var found = pos;
                     if (Compare(memory, snapshot))
                     {
-                        Console.WriteLine($"Found in {(found-snapshot.Count)+1}");
+                        Console.WriteLine($"Found in {(found - snapshot.Count) + 1}");
                         break;
                     }
+
                     memory.RemoveAt(0);
                 }
 
                 pos++;
-                if (pos % 100000 == 0)
+                if (pos % 1000000 == 0)
                 {
                     Console.WriteLine(pos);
                 }
