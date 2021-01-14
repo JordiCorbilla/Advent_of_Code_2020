@@ -18,21 +18,13 @@ namespace Day13
             if (index % TimeStamp == 0)
                 Marked = true;
         }
-
-        public Bus(int pos, long index, int t)
-        {
-            TimeStamp = pos;
-            if (index % TimeStamp == 0)
-                Marked = true;
-            T = t;
-        }
     }
     class Program
     {
         static void Main()
         {
-            Part1();
-            Console.WriteLine();
+            //Part1();
+            //Console.WriteLine();
             Part2();
         }
 
@@ -110,8 +102,7 @@ namespace Day13
                 for (var i = 0; i < busesLong.Count; i++)
                 {
                     if (buses[i] == "x") continue;
-                    var b = new Bus(busesLong[i], pos, i);
-                    if (b.Marked)
+                    if (pos % busesLong[i] == 0)
                     {
                         m += "D";
                     }
