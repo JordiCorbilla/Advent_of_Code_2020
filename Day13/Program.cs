@@ -19,9 +19,9 @@ namespace Day13
                 Marked = true;
         }
 
-        public Bus(string pos, long index, int t)
+        public Bus(int pos, long index, int t)
         {
-            TimeStamp = int.Parse(pos);
+            TimeStamp = pos;
             if (index % TimeStamp == 0)
                 Marked = true;
             T = t;
@@ -50,9 +50,23 @@ namespace Day13
         /// </summary>
         private static void Part2()
         {
-            var file = File.ReadAllLines("input.txt");
+            var file = File.ReadAllLines("inputtest6.txt");
             var buses = file[1].Split(',');
-            long pos = 100000460000000;
+
+            var busesLong = new List<int>();
+            foreach (var bus in buses)
+            {
+                if (bus != "x")
+                {
+                    busesLong.Add(int.Parse(bus));
+                }
+                else
+                {
+                    busesLong.Add(-1);
+                }
+            }
+
+            long pos = 0;
 
             //Generate Snapshot
             var items = buses.Where(x => x != "x").ToList().Count;
@@ -93,10 +107,10 @@ namespace Day13
             while (true)
             {
                 var m = "";
-                for (var i = 0; i < buses.Length; i++)
+                for (var i = 0; i < busesLong.Count; i++)
                 {
                     if (buses[i] == "x") continue;
-                    var b = new Bus(buses[i], pos, i);
+                    var b = new Bus(busesLong[i], pos, i);
                     if (b.Marked)
                     {
                         m += "D";
@@ -124,7 +138,7 @@ namespace Day13
                 }
 
                 pos++;
-                if (pos % 10000000 == 0)
+                if (pos % 100000000 == 0)
                 {
                     sp.Stop();
                     Console.WriteLine($"{pos} - {sp.ElapsedMilliseconds}ms");
