@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Day13
 {
@@ -42,7 +43,7 @@ namespace Day13
         /// </summary>
         private static void Part2()
         {
-            var file = File.ReadAllLines("inputtest6.txt");
+            var file = File.ReadAllLines("input.txt");
             var buses = file[1].Split(',');
 
             var busesLong = new List<int>();
@@ -58,7 +59,7 @@ namespace Day13
                 }
             }
 
-            long pos = 0;
+            long pos = 100139310000000;
 
             //Generate Snapshot
             var items = buses.Where(x => x != "x").ToList().Count;
@@ -98,21 +99,14 @@ namespace Day13
 
             while (true)
             {
-                var m = "";
+                var m = new StringBuilder();
                 for (var i = 0; i < busesLong.Count; i++)
                 {
                     if (buses[i] == "x") continue;
-                    if (pos % busesLong[i] == 0)
-                    {
-                        m += "D";
-                    }
-                    else
-                    {
-                        m += ".";
-                    }
+                    m.Append(pos % busesLong[i] == 0 ? "D" : ".");
                 }
             
-                memory.AddLast(m);
+                memory.AddLast(m.ToString());
 
                 if (memory.Count == snapshot.Count)
                 {
@@ -129,12 +123,10 @@ namespace Day13
                 }
 
                 pos++;
-                if (pos % 100000000 == 0)
-                {
-                    sp.Stop();
-                    Console.WriteLine($"{pos} - {sp.ElapsedMilliseconds}ms");
-                    sp = Stopwatch.StartNew();
-                }
+                if (pos % 10000000 != 0) continue;
+                sp.Stop();
+                Console.WriteLine($"{pos} - {sp.ElapsedMilliseconds}ms");
+                sp = Stopwatch.StartNew();
             }
         }
 
