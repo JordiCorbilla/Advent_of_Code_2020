@@ -59,7 +59,7 @@ namespace Day13
                 }
             }
 
-            long pos = 100139310000000;
+            long pos = 100231550000000;
 
             //Generate Snapshot
             var items = buses.Where(x => x != "x").ToList().Count;
@@ -105,7 +105,7 @@ namespace Day13
                     if (buses[i] == "x") continue;
                     m.Append(pos % busesLong[i] == 0 ? "D" : ".");
                 }
-            
+
                 memory.AddLast(m.ToString());
 
                 if (memory.Count == snapshot.Count)
@@ -132,8 +132,7 @@ namespace Day13
 
         private static bool Compare(IEnumerable<string> item, string snapshot)
         {
-            var one = "";
-            foreach (var s in item) one += (s + "-");
+            var one = item.Aggregate("", (current, s) => current + (s + "-"));
             return one == snapshot;
         }
 
