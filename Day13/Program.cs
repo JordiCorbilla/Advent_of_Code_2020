@@ -59,7 +59,7 @@ namespace Day13
                 }
             }
 
-            long pos = 100231550000000;
+            long pos = 100333920000000;
 
             //Generate Snapshot
             var items = buses.Where(x => x != "x").ToList().Count;
