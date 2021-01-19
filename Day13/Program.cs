@@ -26,7 +26,33 @@ namespace Day13
         {
             //Part1();
             //Console.WriteLine();
-            Part2();
+            //Part2();
+
+            long pos = 100371020000000;
+            while (true)
+            {
+                var a = pos % 67;
+                var b = (pos + 36) % 37;
+                var c = (pos + 42) % 557;
+                var d = (pos + 44) % 29;
+                var e = (pos + 55) % 13;
+                var f = (pos + 59) % 17;
+                var g = (pos + 65) % 23;
+                var h = (pos + 73) % 419;
+                var i = (pos + 92) % 19;
+                if (a == 0 && b == 0 && c == 0 && d == 0 && e == 0 && f == 0 && g == 0 && h == 0 && i == 0 )
+                {
+                    Console.WriteLine(pos);
+                    break;
+                }
+
+                pos++;
+
+                if (pos % 100000000 == 0)
+                {
+                    Console.WriteLine($"{pos}");
+                }
+            }
         }
 
         /// <summary>
