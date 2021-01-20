@@ -28,25 +28,46 @@ namespace Day13
             //Console.WriteLine();
             //Part2();
 
-            long pos = 100371020000000;
+            long pos = 100633400000000;
             while (true)
             {
-                var a = pos % 67;
+                //var a = pos % 67;
                 var b = (pos + 36) % 37;
-                var c = (pos + 42) % 557;
-                var d = (pos + 44) % 29;
-                var e = (pos + 55) % 13;
-                var f = (pos + 59) % 17;
-                var g = (pos + 65) % 23;
-                var h = (pos + 73) % 419;
-                var i = (pos + 92) % 19;
-                if (a == 0 && b == 0 && c == 0 && d == 0 && e == 0 && f == 0 && g == 0 && h == 0 && i == 0 )
+                if (b == 0)
                 {
-                    Console.WriteLine(pos);
-                    break;
+                    var c = (pos + 42) % 557;
+                    if (c == 0)
+                    {
+                        var d = (pos + 44) % 29;
+                        if (d == 0)
+                        {
+                            var e = (pos + 55) % 13;
+                            if (e == 0)
+                            {
+                                var f = (pos + 59) % 17;
+                                if (f == 0)
+                                {
+                                    var g = (pos + 65) % 23;
+                                    if (g == 0)
+                                    {
+                                        var h = (pos + 73) % 419;
+                                        if (h == 0)
+                                        {
+                                            var i = (pos + 92) % 19;
+                                            if (i == 0)
+                                            {
+                                                Console.WriteLine(pos);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
-                pos++;
+                pos = pos + 67;
 
                 if (pos % 100000000 == 0)
                 {
