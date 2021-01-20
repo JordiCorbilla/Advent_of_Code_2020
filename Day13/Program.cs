@@ -31,7 +31,6 @@ namespace Day13
             long pos = 100633400000000;
             while (true)
             {
-                //var a = pos % 67;
                 var b = (pos + 36) % 37;
                 if (b == 0)
                 {
@@ -67,7 +66,7 @@ namespace Day13
                     }
                 }
 
-                pos = pos + 67;
+                pos += 67;
 
                 if (pos % 100000000 == 0)
                 {
