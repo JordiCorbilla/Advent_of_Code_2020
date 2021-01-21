@@ -28,7 +28,7 @@ namespace Day13
             //Console.WriteLine();
             //Part2();
 
-            long pos = 100633400000000;
+            long pos = 223745900000000;
             while (true)
             {
                 var b = (pos + 36) % 37;
