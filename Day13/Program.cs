@@ -27,64 +27,28 @@ namespace Day13
             //Part1();
             //Console.WriteLine();
             //Part2();
-
-            long pos = 100000000000000;
-            while (true)
+            var file = File.ReadAllLines("input.txt");
+            var buses = file[1].Split(',');
+            for (int i = 0; i < buses.Length; i++)
             {
-                var file = File.ReadAllLines("input.txt");
-                var buses = file[1].Split(',');
-                for (int i = 0; i < buses.Length; i++)
+                if (buses[i] != "x")
                 {
-                    if (buses[i] != "x")
-                    {
-                        Console.WriteLine($"(pos + {i}) % {buses[i]}");
-                    }
-                }
-
-
-                var b = (pos + 35) % 37; // 1147
-                if (b == 0)
-                {
-                    var c = (pos + 41) % 557; // 13925
-                    if (c == 0)
-                    {
-                        var d = (pos + 43) % 29; // 667
-                        if (d == 0)
-                        {
-                            var e = (pos + 54) % 13; // 156
-                            if (e == 0)
-                            {
-                                var f = (pos + 58) % 17; // 136
-                                if (f == 0)
-                                {
-                                    var g = (pos + 64) % 23; // 46
-                                    if (g == 0)
-                                    {
-                                        var h = (pos + 72) % 419; // 2514
-                                        if (h == 0)
-                                        {
-                                            Console.WriteLine($"getting close {pos}");
-                                            var i = (pos + 91) % 19; // 475
-                                            if (i == 0)
-                                            {
-                                                Console.WriteLine(pos);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                pos += 41;
-
-                if (pos % 100000000 == 0)
-                {
-                    Console.WriteLine($"{pos}");
+                    Console.WriteLine($"(pos + {i}) % {buses[i]}");
                 }
             }
+
+            var file2 = File.ReadAllLines("inputtest6.txt");
+            var buses2 = file2[1].Split(',');
+            for (int i = 0; i < buses2.Length; i++)
+            {
+                if (buses2[i] != "x")
+                {
+                    Console.WriteLine($"(pos + {i}) % {buses2[i]}");
+                }
+            }
+
+            Part2Test();
+            Part2New();
         }
 
         /// <summary>
@@ -225,6 +189,85 @@ namespace Day13
             }
 
             Console.WriteLine($"Solution = {(trueFound - initialTimestamp)*busLine}");
+        }
+
+        private static void Part2New()
+        {
+            long pos = 100000000000000;
+            while (true)
+            {
+                var b = (pos + 35) % 37; // 1147
+                if (b == 0)
+                {
+                    var c = (pos + 41) % 557; // 13925
+                    if (c == 0)
+                    {
+                        var d = (pos + 43) % 29; // 667
+                        if (d == 0)
+                        {
+                            var e = (pos + 54) % 13; // 156
+                            if (e == 0)
+                            {
+                                var f = (pos + 58) % 17; // 136
+                                if (f == 0)
+                                {
+                                    var g = (pos + 64) % 23; // 46
+                                    if (g == 0)
+                                    {
+                                        var h = (pos + 72) % 419; // 2514
+                                        if (h == 0)
+                                        {
+                                            Console.WriteLine($"getting close {pos}");
+                                            var i = (pos + 91) % 19; // 475
+                                            if (i == 0)
+                                            {
+                                                Console.WriteLine(pos);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                pos += 41;
+
+                if (pos % 100000000 == 0)
+                {
+                    Console.WriteLine($"{pos}");
+                }
+            }
+        }
+
+        private static void Part2Test()
+        {
+            long pos = 0;
+            while (true)
+            {
+                var b = (pos + 1) % 37; // 1147
+                if (b == 0)
+                {
+                    var c = (pos + 2) % 47; // 13925
+                    if (c == 0)
+                    {
+                        var d = (pos + 3) % 1889; // 667
+                        if (d == 0)
+                        {
+                            Console.WriteLine(pos);
+                            break;
+                        }
+                    }
+                }
+
+                pos += 1789;
+
+                if (pos % 100000 == 0)
+                {
+                    Console.WriteLine($"{pos}");
+                }
+            }
         }
     }
 }
