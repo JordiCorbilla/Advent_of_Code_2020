@@ -28,9 +28,14 @@ namespace Day13
             //Console.WriteLine();
             //Part2();
 
-            long pos = 490077600000000;
+            long pos = 566752400000000;
             while (true)
             {
+                if ((pos + 92) % 19 == 0)
+                {
+                    Console.WriteLine("it happens!");
+                }
+
                 var b = (pos + 36) % 37; // 1147
                 if (b == 0)
                 {
@@ -52,6 +57,7 @@ namespace Day13
                                         var h = (pos + 73) % 419; // 2514
                                         if (h == 0)
                                         {
+                                            Console.WriteLine($"getting close {pos}");
                                             var i = (pos + 92) % 19; // 475
                                             if (i == 0)
                                             {
