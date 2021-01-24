@@ -31,10 +31,10 @@ namespace Day13
             long pos = 566752400000000;
             while (true)
             {
-                if ((pos + 92) % 19 == 0)
-                {
-                    Console.WriteLine("it happens!");
-                }
+                //if ((pos + 92) % 19 == 0)
+                //{
+                //    Console.WriteLine("it happens!");
+                //}
 
                 var b = (pos + 36) % 37; // 1147
                 if (b == 0)
