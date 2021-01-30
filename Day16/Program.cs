@@ -67,13 +67,17 @@ namespace Day16
             int notInRange = 0;
             foreach(var ticket in tickets)
             {
+                bool allInRange = false;
                 foreach (var rangesTicket in rangesTickets)
                 {
-                    if (!rangesTicket.InRange(ticket))
+                    if (rangesTicket.InRange(ticket))
                     {
-                        notInRange += ticket;
-                        break;
+                        allInRange = true;
                     }
+                }
+                if (!allInRange)
+                {
+                    notInRange += ticket;
                 }
             }
             Console.WriteLine(notInRange);
