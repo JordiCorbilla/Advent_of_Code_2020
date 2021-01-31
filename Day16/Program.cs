@@ -77,6 +77,7 @@ namespace Day16
                 }
                 if (!allInRange)
                 {
+                    Console.WriteLine(ticket);
                     notInRange += ticket;
                 }
             }
