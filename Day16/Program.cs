@@ -35,9 +35,12 @@ namespace Day16
     class Program
     {
         public static HashSet<int> Discarded { get; set; }
+        public static List<string> NearbyTickets { get; set; }
+        public static List<Range> RangesTickets { get; set; }
         static void Main(string[] args)
         {
             Discarded = new HashSet<int>();
+            RangesTickets = new List<Range>();
             Part1();
             Console.WriteLine();
             Part2();
@@ -47,7 +50,18 @@ namespace Day16
         {
             //Build classifier
             Console.WriteLine(Discarded.Count);
-
+            //Clean up tickets
+            List<string> cleanTickets = new List<string>();
+            List<List<int>> matrix = new List<List<int>>();
+            foreach (var row in NearbyTickets)
+            {
+                var numbers = row.Split(",").Select(int.Parse);
+                var s = new List<int>();
+                foreach(var number in numbers)
+                    if (!Discarded.Contains(number))
+                        s.Add(number);
+                matrix.Add(s);
+            }
         }
 
         private static void Part1()
@@ -55,11 +69,12 @@ namespace Day16
             var file = File.ReadAllLines("input.txt");
             bool startScanTickets = false;
             List<int> tickets = new List<int>();
-            List<Range> rangesTickets = new List<Range>();
+            
             foreach (var row in file)
             {
                 if (startScanTickets)
                 {
+                    NearbyTickets.Add(row);
                     var ticketsScanned = row.Split(",");
                     tickets.AddRange(ticketsScanned.Select(int.Parse));
                 }
@@ -74,7 +89,7 @@ namespace Day16
                     var subRanges = ranges[1].Split("or");
                     var first = subRanges[0].Split("-");
                     var second = subRanges[1].Split("-");
-                    rangesTickets.Add(new Range(
+                    RangesTickets.Add(new Range(
                             ranges[0].Trim(),
                         int.Parse(first[0].Trim()), 
                         int.Parse(first[1].Trim()),
@@ -87,7 +102,7 @@ namespace Day16
             foreach(var ticket in tickets)
             {
                 bool allInRange = false;
-                foreach (var rangesTicket in rangesTickets)
+                foreach (var rangesTicket in RangesTickets)
                 {
                     if (rangesTicket.InRange(ticket))
                     {
