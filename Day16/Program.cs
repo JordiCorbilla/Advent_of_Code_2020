@@ -136,8 +136,8 @@ namespace Day16
 
             Console.WriteLine("");
 
-            var counts = rangeTables.GroupBy(x => x.Key)
-                .ToDictionary(g => g.Key, g => g.Count());
+            var counts = rangeTables.
+                ToDictionary(item => item.Key, item => item.Value.Count);
 
             var sorted = from items in counts
                 orderby items.Value ascending
@@ -149,13 +149,6 @@ namespace Day16
             }
 
             Console.WriteLine("");
-            //foreach (var rangeTable in rangeTables)
-            //{
-            //    Console.WriteLine($"{rangeTable.Column}, {rangeTable.Name}");
-            //}
-
-            //var sorted = rangeTables.GroupBy(x => x.Column).Select(y =>
-            //    new RangeTable(y.Key, y.Count(x => x.Name)));
 
         }
 
