@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using table.lib;
 
 namespace Day16
 {
@@ -41,6 +42,7 @@ namespace Day16
         {
             Discarded = new HashSet<int>();
             RangesTickets = new List<Range>();
+            NearbyTickets = new List<string>();
             Part1();
             Console.WriteLine();
             Part2();
@@ -52,16 +54,25 @@ namespace Day16
             Console.WriteLine(Discarded.Count);
             //Clean up tickets
             List<string> cleanTickets = new List<string>();
-            List<List<int>> matrix = new List<List<int>>();
+            var matrix = new List<IEnumerable<int>>();
             foreach (var row in NearbyTickets)
             {
                 var numbers = row.Split(",").Select(int.Parse);
                 var s = new List<int>();
-                foreach(var number in numbers)
+                foreach (var number in numbers)
+                {
                     if (!Discarded.Contains(number))
                         s.Add(number);
+                    else
+                    {
+                        s.Add(-1);
+                    }
+                }
+
                 matrix.Add(s);
             }
+
+            Table<IEnumerable<int>>.Add(matrix).ToConsole();
         }
 
         private static void Part1()
