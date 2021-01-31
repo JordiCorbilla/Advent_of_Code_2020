@@ -191,39 +191,47 @@ namespace Day13
             Console.WriteLine($"Solution = {(trueFound - initialTimestamp)*busLine}");
         }
 
+        //getting close 743520161713899
+        //yayyyyyy!
+        //743520161713899
+
         private static void Part2New()
         {
-            long pos = 743519600000000;
+            long pos = 743520161700000;
             while (true)
             {
-                var b = (pos + 35) % 37; // 1147
-                if (b == 0)
+                var a = (pos) % 41;
+                if (a == 0)
                 {
-                    var c = (pos + 41) % 557; // 13925
-                    if (c == 0)
+                    var b = (pos + 35) % 37; // 1147
+                    if (b == 0)
                     {
-                        var d = (pos + 43) % 29; // 667
-                        if (d == 0)
+                        var c = (pos + 41) % 557; // 13925
+                        if (c == 0)
                         {
-                            var e = (pos + 54) % 13; // 156
-                            if (e == 0)
+                            var d = (pos + 43) % 29; // 667
+                            if (d == 0)
                             {
-                                var f = (pos + 58) % 17; // 136
-                                if (f == 0)
+                                var e = (pos + 54) % 13; // 156
+                                if (e == 0)
                                 {
-                                    var g = (pos + 64) % 23; // 46
-                                    if (g == 0)
+                                    var f = (pos + 58) % 17; // 136
+                                    if (f == 0)
                                     {
-                                        var h = (pos + 72) % 419; // 2514
-                                        if (h == 0)
+                                        var g = (pos + 64) % 23; // 46
+                                        if (g == 0)
                                         {
-                                            Console.WriteLine($"getting close {pos}");
-                                            var i = (pos + 91) % 19; // 475
-                                            if (i == 0)
+                                            var h = (pos + 72) % 419; // 2514
+                                            if (h == 0)
                                             {
-                                                Console.WriteLine($"yayyyyyy!");
-                                                Console.WriteLine(pos);
-                                                break;
+                                                Console.WriteLine($"getting close {pos}");
+                                                var i = (pos + 91) % 19; // 475
+                                                if (i == 0)
+                                                {
+                                                    Console.WriteLine($"yayyyyyy!");
+                                                    Console.WriteLine(pos);
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
@@ -233,7 +241,7 @@ namespace Day13
                     }
                 }
 
-                pos += 41;
+                pos += 1;
 
                 if (pos % 100000000 == 0)
                 {
