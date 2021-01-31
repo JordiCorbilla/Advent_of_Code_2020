@@ -62,12 +62,14 @@ namespace Day16
     {
         public static HashSet<int> Discarded { get; set; }
         public static List<string> NearbyTickets { get; set; }
+        public static List<string> YourTickets { get; set; }
         public static List<Range> RangesTickets { get; set; }
         static void Main(string[] args)
         {
             Discarded = new HashSet<int>();
             RangesTickets = new List<Range>();
             NearbyTickets = new List<string>();
+            YourTickets = new List<string>();
             Part1();
             Console.WriteLine();
             Part2();
@@ -184,16 +186,30 @@ namespace Day16
             }
 
             Console.WriteLine("Classification:");
+            Console.WriteLine(YourTickets[0]);
+            var individual = YourTickets[0].Split(",").Select(int.Parse);
+            Dictionary<int, int> mytickets = individual
+                .Select((s, index) => new { s, index })
+                .ToDictionary(x => x.index, x => x.s);
+
+            long amount = 1;
             foreach (var take in taken)
             {
-                Console.WriteLine($"{take.Key}, {take.Value}");
+                Console.WriteLine($"{take.Key}, {take.Value}, {mytickets[take.Value]}");
+                if (take.Key.StartsWith("departure"))
+                {
+                    amount *= mytickets[take.Value];
+                    Console.WriteLine(mytickets[take.Value]);
+                }
             }
+            Console.WriteLine(amount);
         }
 
         private static void Part1()
         {
             var file = File.ReadAllLines("input.txt");
             bool startScanTickets = false;
+            bool startYourTickets = false;
             List<int> tickets = new List<int>();
             
             foreach (var row in file)
@@ -204,9 +220,24 @@ namespace Day16
                     var ticketsScanned = row.Split(",");
                     tickets.AddRange(ticketsScanned.Select(int.Parse));
                 }
+
+                if (startYourTickets)
+                {
+                    if (row.Length > 10)
+                        YourTickets.Add(row);
+                    else
+                    {
+                        startYourTickets = false;
+                    }
+                }
                 if (row.Contains("nearby tickets:"))
                 {
+                    startYourTickets = false;
                     startScanTickets = true;
+                }
+                else if (row.Contains("your ticket:"))
+                {
+                    startYourTickets = true;
                 }
                 //departure location: 44-709 or 728-964
                 else if (row.Contains(": "))
