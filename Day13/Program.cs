@@ -193,7 +193,7 @@ namespace Day13
 
         private static void Part2New()
         {
-            long pos = 100000000000000;
+            long pos = 743519600000000;
             while (true)
             {
                 var b = (pos + 35) % 37; // 1147
@@ -221,6 +221,7 @@ namespace Day13
                                             var i = (pos + 91) % 19; // 475
                                             if (i == 0)
                                             {
+                                                Console.WriteLine($"yayyyyyy!");
                                                 Console.WriteLine(pos);
                                                 break;
                                             }
