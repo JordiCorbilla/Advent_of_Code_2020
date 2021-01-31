@@ -149,7 +149,45 @@ namespace Day16
             }
 
             Console.WriteLine("");
+            var dictionarySorted = sorted.ToDictionary(x => x.Key, x => x.Value);
+            //Check items one by one to determine order
+            Dictionary<string, int> taken = new Dictionary<string, int>();
+            while (taken.Count != 20)
+            {
+                foreach (var index in dictionarySorted)
+                {
+                    var inspect = dictionarySorted[index.Key];
+                    if (inspect == 1)
+                    {
+                        string category = rangeTables[index.Key][0].Name;
+                        taken.Add(category, index.Key);
+                        
+                        foreach (var h in rangeTables)
+                        {
+                            var itemToRemove = h.Value.SingleOrDefault(r => r.Name == category);
+                            if (itemToRemove != null)
+                                h.Value.Remove(itemToRemove);
+                        }
+                        rangeTables.Remove(index.Key);
+                        break;
+                    }
+                }
 
+                counts = rangeTables.
+                    ToDictionary(item => item.Key, item => item.Value.Count);
+
+                sorted = from items in counts
+                    orderby items.Value ascending
+                    select items;
+
+                dictionarySorted = sorted.ToDictionary(x => x.Key, x => x.Value);
+            }
+
+            Console.WriteLine("Classification:");
+            foreach (var take in taken)
+            {
+                Console.WriteLine($"{take.Key}, {take.Value}");
+            }
         }
 
         private static void Part1()
