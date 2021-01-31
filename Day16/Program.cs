@@ -34,6 +34,22 @@ namespace Day16
             return (value >= _min && value <= _max) || (value >= _min2 && value <= _max2);
         }
     }
+
+    public class RangeTable{
+        private readonly int _column;
+        private readonly string _name;
+
+        public RangeTable(int column, string name)
+        {
+            _column = column;
+            _name = name;
+        }
+
+        public int Column => _column;
+        public string Name => _name;
+
+    }
+
     class Program
     {
         public static HashSet<int> Discarded { get; set; }
@@ -78,7 +94,7 @@ namespace Day16
                 .ToConsole();
 
             //Check the first column to identify which are the numbers that belong to a range
-
+            var rangeTables = new List<RangeTable>();
             for (int i = 0; i < 20; i++)
             {
                 foreach (var range in RangesTickets)
@@ -96,7 +112,10 @@ namespace Day16
                     }
 
                     if (belongs)
+                    {
                         Console.WriteLine($"Column:{i}, {range.GetName()}: Belongs: {belongs}");
+                        rangeTables.Add(new RangeTable(i, range.GetName()));
+                    }
                 }
             }
 
