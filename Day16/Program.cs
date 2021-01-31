@@ -7,24 +7,37 @@ namespace Day16
 {
     public class Range
     {
+        private readonly string _name;
         private readonly int _min;
         private readonly int _max;
+        private readonly int _min2;
+        private readonly int _max2;
 
-        public Range(int min, int max)
+        public Range(string name, int min, int max, int min2, int max2)
         {
+            _name = name;
             _min = min;
             _max = max;
+            _min2 = min2;
+            _max2 = max2;
+        }
+
+        public string GetName()
+        {
+            return _name;
         }
 
         public bool InRange(int value)
         {
-            return value >= _min && value <= _max;
+            return (value >= _min && value <= _max) || (value >= _min2 && value <= _max2);
         }
     }
     class Program
     {
+        public static HashSet<int> Discarded { get; set; }
         static void Main(string[] args)
         {
+            Discarded = new HashSet<int>();
             Part1();
             Console.WriteLine();
             Part2();
@@ -32,7 +45,9 @@ namespace Day16
 
         private static void Part2()
         {
-            
+            //Build classifier
+            Console.WriteLine(Discarded.Count);
+
         }
 
         private static void Part1()
@@ -59,8 +74,12 @@ namespace Day16
                     var subRanges = ranges[1].Split("or");
                     var first = subRanges[0].Split("-");
                     var second = subRanges[1].Split("-");
-                    rangesTickets.Add(new Range(int.Parse(first[0].Trim()), int.Parse(first[1].Trim())));
-                    rangesTickets.Add(new Range(int.Parse(second[0].Trim()), int.Parse(second[1].Trim())));
+                    rangesTickets.Add(new Range(
+                            ranges[0].Trim(),
+                        int.Parse(first[0].Trim()), 
+                        int.Parse(first[1].Trim()),
+                        int.Parse(second[0].Trim()),
+                        int.Parse(second[1].Trim())));
                 }
             }
 
@@ -78,6 +97,7 @@ namespace Day16
                 if (!allInRange)
                 {
                     Console.WriteLine(ticket);
+                    Discarded.Add(ticket);
                     notInRange += ticket;
                 }
             }
