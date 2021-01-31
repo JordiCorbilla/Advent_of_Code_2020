@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using table.lib;
@@ -75,6 +76,32 @@ namespace Day16
             Table<IEnumerable<int>>.Add(matrix,"T")
                 .FilterOutColumns(new[] { "Capacity", "Count" })
                 .ToConsole();
+
+            //Check the first column to identify which are the numbers that belong to a range
+
+            for (int i = 0; i < 20; i++)
+            {
+                foreach (var range in RangesTickets)
+                {
+                    var belongs = true;
+                    foreach (var row in matrix)
+                    {
+                        var s = row.ToList();
+
+                        if (!range.InRange(s[i]) && s[i] != -1)
+                        {
+                            belongs = false;
+                            break;
+                        }
+                    }
+
+                    if (belongs)
+                        Console.WriteLine($"Column:{i}, {range.GetName()}: Belongs: {belongs}");
+                }
+            }
+
+
+
         }
 
         private static void Part1()
