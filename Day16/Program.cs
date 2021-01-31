@@ -72,7 +72,9 @@ namespace Day16
                 matrix.Add(s);
             }
 
-            Table<IEnumerable<int>>.Add(matrix).ToConsole();
+            Table<IEnumerable<int>>.Add(matrix,"T")
+                .FilterOutColumns(new[] { "Capacity", "Count" })
+                .ToConsole();
         }
 
         private static void Part1()
