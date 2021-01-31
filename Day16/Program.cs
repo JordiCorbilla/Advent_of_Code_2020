@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using table.lib;
 
 namespace Day16
@@ -50,6 +52,12 @@ namespace Day16
 
     }
 
+    public class KeyCount
+    {
+        public int Key { get; set; }
+        public int Count { get; set; }
+    }
+
     class Program
     {
         public static HashSet<int> Discarded { get; set; }
@@ -94,7 +102,7 @@ namespace Day16
                 .ToConsole();
 
             //Check the first column to identify which are the numbers that belong to a range
-            var rangeTables = new List<RangeTable>();
+            var rangeTables = new Dictionary<int, List<RangeTable>>();
             for (int i = 0; i < 20; i++)
             {
                 foreach (var range in RangesTickets)
@@ -114,12 +122,40 @@ namespace Day16
                     if (belongs)
                     {
                         Console.WriteLine($"Column:{i}, {range.GetName()}: Belongs: {belongs}");
-                        rangeTables.Add(new RangeTable(i, range.GetName()));
+                        if (rangeTables.ContainsKey(i))
+                        {
+                            rangeTables[i].Add(new RangeTable(i, range.GetName()));
+                        }
+                        else
+                        {
+                            rangeTables.Add(i, new List<RangeTable>{new RangeTable(i, range.GetName())});
+                        }
                     }
                 }
             }
 
+            Console.WriteLine("");
 
+            var counts = rangeTables.GroupBy(x => x.Key)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            var sorted = from items in counts
+                orderby items.Value ascending
+                select items;
+
+            foreach (var sort in sorted)
+            {
+                Console.WriteLine($"{sort.Key}, {sort.Value}");
+            }
+
+            Console.WriteLine("");
+            //foreach (var rangeTable in rangeTables)
+            //{
+            //    Console.WriteLine($"{rangeTable.Column}, {rangeTable.Name}");
+            //}
+
+            //var sorted = rangeTables.GroupBy(x => x.Column).Select(y =>
+            //    new RangeTable(y.Key, y.Count(x => x.Name)));
 
         }
 
