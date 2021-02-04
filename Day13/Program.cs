@@ -198,7 +198,7 @@ namespace Day13
         private static void Part2New()
         {
             //         743520161713899
-            long pos = 979999999999990;
+            long pos = 379999999999966;
             while (true)
             {
                 var b = (pos + 35) % 37; // 1147
