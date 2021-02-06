@@ -8,7 +8,7 @@ namespace Day18
     {
         public static Dictionary<string, long> Solutions = new Dictionary<string, long>();
         public static Dictionary<string, long> SubOperations = new Dictionary<string, long>();
-        static void Main(string[] args)
+        static void Main()
         {
             //3 * (2 + (9 * 2 * 2 + 8) * (7 * 6 * 7 * 3) * (3 * 9 * 7) * (6 * 6)) * 9 * 8 + 6
             long result = ScanEquation("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2");
@@ -39,6 +39,11 @@ namespace Day18
             Console.WriteLine(result);
 
             Solutions.Clear();
+            SubOperations.Clear();
+            result = ScanEquation2("9 + 3 + 5 + 3 * (5 + (8 + 7 * 8 * 8) * (5 + 9 + 9 * 9 * 4)) * (6 * (8 * 5 * 6 * 8 + 4 * 5))");
+            Console.WriteLine(result);
+
+            Solutions.Clear();
             Part1();
             Solutions.Clear();
             SubOperations.Clear();
@@ -62,9 +67,9 @@ namespace Day18
             long acc = 0;
             foreach (var row in file)
             {
-                Solutions.Clear();
-                SubOperations.Clear();
-                acc += ScanEquation2(row);
+                var sol = ScanEquation2(row);
+                Console.WriteLine($"{row}={sol}");
+                acc += sol;
             }
             Console.WriteLine(acc);
         }
@@ -107,6 +112,8 @@ namespace Day18
                     string replace = $"({item.Key})";
                     processing = processing.Replace(replace, item.Value.ToString());
                 }
+
+                Solutions.Clear();
             }
 
             return SolveEquation(processing);
@@ -189,6 +196,7 @@ namespace Day18
                     if (!processing.Contains("("))
                         break;
                 }
+                Solutions.Clear();
             }
 
             return SolveEquationPlus(processing);
@@ -235,6 +243,8 @@ namespace Day18
                     if (!resolve.Contains("+"))
                         break;
                 }
+
+                SubOperations.Clear();
             }
 
             return SolveEquation(resolve);
