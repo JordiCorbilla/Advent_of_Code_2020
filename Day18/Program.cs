@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Day18
 {
@@ -53,11 +54,7 @@ namespace Day18
         public static void Part1()
         {
             var file = File.ReadAllLines("input.txt");
-            long acc = 0;
-            foreach (var row in file)
-            {
-                acc += ScanEquation(row);
-            }
+            long acc = file.Sum(ScanEquation);
             Console.WriteLine(acc);
         }
 
@@ -77,8 +74,8 @@ namespace Day18
         public static long ScanEquation(string s)
         {
             var resolve = "";
-            bool start = false;
-            string processing = s;
+            var start = false;
+            var processing = s;
             while (processing.Contains("("))
             {
                 foreach (var digit in processing)
@@ -88,29 +85,31 @@ namespace Day18
                         resolve += digit;
                     }
 
-                    if (digit == '(' && !start)
+                    switch (digit)
                     {
-                        start = true;
-                    }
-                    else if (digit == '(' && start)
-                    {
-                        resolve = "";
-                    }
-                    else if (digit == ')' && start)
-                    {
-                        start = false;
-                        var equation = resolve.Replace(")", "");
-                        long num = SolveEquation(equation);
-                        if (!Solutions.ContainsKey(equation))
-                            Solutions.Add(equation, num);
-                        resolve = "";
+                        case '(' when !start:
+                            start = true;
+                            break;
+                        case '(' when true:
+                            resolve = "";
+                            break;
+                        case ')' when start:
+                        {
+                            start = false;
+                            var equation = resolve.Replace(")", "");
+                            var num = SolveEquation(equation);
+                            if (!Solutions.ContainsKey(equation))
+                                Solutions.Add(equation, num);
+                            resolve = "";
+                            break;
+                        }
                     }
                 }
 
-                foreach (var item in Solutions)
+                foreach (var (key, value) in Solutions)
                 {
-                    string replace = $"({item.Key})";
-                    processing = processing.Replace(replace, item.Value.ToString());
+                    var replace = $"({key})";
+                    processing = processing.Replace(replace, value.ToString());
                 }
 
                 Solutions.Clear();
@@ -126,7 +125,7 @@ namespace Day18
             long accumulator =long.Parse(numbers[0]);
             bool sum = false;
             bool mul = false;
-            for (int i = 1; i < numbers.Length; i++)
+            for (var i = 1; i < numbers.Length; i++)
             {
                 if (mul)
                 {
@@ -167,32 +166,34 @@ namespace Day18
                         resolve += digit;
                     }
 
-                    if (digit == '(' && !start)
+                    switch (digit)
                     {
-                        start = true;
-                    }
-                    else if (digit == '(' && start)
-                    {
-                        resolve = "";
-                    }
-                    else if (digit == ')' && start)
-                    {
-                        start = false;
-                        var equation = resolve.Replace(")", "");
-                        if (!Solutions.ContainsKey(equation))
+                        case '(' when !start:
+                            start = true;
+                            break;
+                        case '(' when true:
+                            resolve = "";
+                            break;
+                        case ')' when start:
                         {
-                            var num = SolveEquationPlus(equation);
-                            Solutions.Add(equation, num);
-                        }
+                            start = false;
+                            var equation = resolve.Replace(")", "");
+                            if (!Solutions.ContainsKey(equation))
+                            {
+                                var num = SolveEquationPlus(equation);
+                                Solutions.Add(equation, num);
+                            }
 
-                        resolve = "";
+                            resolve = "";
+                            break;
+                        }
                     }
                 }
 
-                foreach (var item in Solutions)
+                foreach (var (key, value) in Solutions)
                 {
-                    string replace = $"({item.Key})";
-                    processing = processing.Replace(replace, item.Value.ToString());
+                    var replace = $"({key})";
+                    processing = processing.Replace(replace, value.ToString());
                     if (!processing.Contains("("))
                         break;
                 }
@@ -213,13 +214,13 @@ namespace Day18
                 var numbers = resolve.Split(" ");
                 long left = -1;
                 long right = -1;
-                bool plusFound = false;
+                var plusFound = false;
 
-                for (int i = 0; i < numbers.Length; i++)
+                foreach (var t in numbers)
                 {
-                    if (plusFound && right == -1 && numbers[i] != "+" && numbers[i] != "*")
+                    if (plusFound && right == -1 && t != "+" && t != "*")
                     {
-                        right = long.Parse(numbers[i]);
+                        right = long.Parse(t);
 
                         if (!SubOperations.ContainsKey($"{left} + {right}"))
                         {
@@ -228,18 +229,23 @@ namespace Day18
                         }
                     }
 
-                    if (left == -1 && numbers[i] != "+" && numbers[i] != "*")
-                        left = long.Parse(numbers[i]);
-                    if (numbers[i] == "+")
-                        plusFound = true;
-                    if (numbers[i] == "*")
-                        left = -1;
+                    if (left == -1 && t != "+" && t != "*")
+                        left = long.Parse(t);
+                    switch (t)
+                    {
+                        case "+":
+                            plusFound = true;
+                            break;
+                        case "*":
+                            left = -1;
+                            break;
+                    }
                 }
 
-                foreach (var item in SubOperations)
+                foreach (var (key, value) in SubOperations)
                 {
-                    string replace = $"{item.Key}";
-                    resolve = resolve.Replace(replace, item.Value.ToString());
+                    var replace = $"{key}";
+                    resolve = resolve.Replace(replace, value.ToString());
                     if (!resolve.Contains("+"))
                         break;
                 }
