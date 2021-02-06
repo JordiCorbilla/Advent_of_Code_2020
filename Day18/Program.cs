@@ -34,6 +34,9 @@ namespace Day18
             Solutions.Clear();
             result = ScanEquation2("5 + (8 * 3 + 9 + 3 * 4 * 3)");
             Console.WriteLine(result);
+            Solutions.Clear();
+            result = ScanEquation2("1 + (2 * 3) + (4 * (5 + 6))");
+            Console.WriteLine(result);
 
             Solutions.Clear();
             Part1();
@@ -59,6 +62,8 @@ namespace Day18
             long acc = 0;
             foreach (var row in file)
             {
+                Solutions.Clear();
+                SubOperations.Clear();
                 acc += ScanEquation2(row);
             }
             Console.WriteLine(acc);
