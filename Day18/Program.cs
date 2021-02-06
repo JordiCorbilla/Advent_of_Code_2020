@@ -22,10 +22,23 @@ namespace Day18
             Solutions.Clear();
             result = ScanEquation2("1 + 2 * 3 + 4 * 5 + 6");
             Console.WriteLine(result);
+            Solutions.Clear();
+            result = ScanEquation2("2 + 8");
+            Console.WriteLine(result);
+            Solutions.Clear();
+            result = ScanEquation2("6 * 5 * 3");
+            Console.WriteLine(result);
+            Solutions.Clear();
+            result = ScanEquation2("2 * 3 + (4 * 5)");
+            Console.WriteLine(result);
+            Solutions.Clear();
+            result = ScanEquation2("5 + (8 * 3 + 9 + 3 * 4 * 3)");
+            Console.WriteLine(result);
 
             Solutions.Clear();
             Part1();
             Solutions.Clear();
+            SubOperations.Clear();
             Part2();
         }
 
@@ -154,9 +167,12 @@ namespace Day18
                     {
                         start = false;
                         var equation = resolve.Replace(")", "");
-                        long num = SolveEquationPlus(equation);
                         if (!Solutions.ContainsKey(equation))
+                        {
+                            var num = SolveEquationPlus(equation);
                             Solutions.Add(equation, num);
+                        }
+
                         resolve = "";
                     }
                 }
@@ -165,6 +181,8 @@ namespace Day18
                 {
                     string replace = $"({item.Key})";
                     processing = processing.Replace(replace, item.Value.ToString());
+                    if (!processing.Contains("("))
+                        break;
                 }
             }
 
