@@ -195,6 +195,10 @@ namespace Day13
         //yayyyyyy!
         //743520161713899
 
+        //getting close 1589988455025904
+        //yayyyyyy!
+        //1589988455025904
+
         private static void Part2New()
         {
             //         7343520161713899
