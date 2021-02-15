@@ -199,10 +199,19 @@ namespace Day13
         //yayyyyyy!
         //1589988455025904
 
+        //This is the solution, it took a while to
+        //figure out as the equation below was wrong
+        //but you need to loop from 100000000000000 + x (as divisible by 41)
+        //and then let it run until it reaches the number below
+        // usually a couple of days
+        //getting close 598411311431841
+        //yayyyyyy!
+        //598411311431841
+
         private static void Part2New()
         {
-            //         7343520161713899
-            long pos = 343520161713887;
+            //         598411311431841
+            long pos = 598411311431841;
             while (true)
             {
                 var b = (pos + 35) % 37; // 1147
