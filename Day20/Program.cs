@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace Day20
@@ -22,7 +23,6 @@ namespace Day20
             var file = File.ReadAllLines("input.txt");
             var tiles = new List<Tile>();
             bool start = false;
-            int id = -1;
             Tile tile = null;
             foreach (var row in file)
             {
@@ -43,6 +43,8 @@ namespace Day20
             }
 
             Console.WriteLine(tiles.Count);
+            string[][] a = new string[720][];
+
         }
     }
 }
