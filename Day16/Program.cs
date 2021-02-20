@@ -8,11 +8,11 @@ namespace Day16
 {
     public class Range
     {
-        private readonly string _name;
-        private readonly int _min;
         private readonly int _max;
-        private readonly int _min2;
         private readonly int _max2;
+        private readonly int _min;
+        private readonly int _min2;
+        private readonly string _name;
 
         public Range(string name, int min, int max, int min2, int max2)
         {
@@ -30,23 +30,21 @@ namespace Day16
 
         public bool InRange(int value)
         {
-            return (value >= _min && value <= _max) || (value >= _min2 && value <= _max2);
+            return value >= _min && value <= _max || value >= _min2 && value <= _max2;
         }
     }
 
-    public class RangeTable{
-        private readonly int _column;
-        private readonly string _name;
-
+    public class RangeTable
+    {
         public RangeTable(int column, string name)
         {
-            _column = column;
-            _name = name;
+            Column = column;
+            Name = name;
         }
 
-        public int Column => _column;
-        public string Name => _name;
+        public int Column { get; }
 
+        public string Name { get; }
     }
 
     public class KeyCount
@@ -55,13 +53,14 @@ namespace Day16
         public int Count { get; set; }
     }
 
-    class Program
+    internal class Program
     {
         public static HashSet<int> Discarded { get; set; }
         public static List<string> NearbyTickets { get; set; }
         public static List<string> YourTickets { get; set; }
         public static List<Range> RangesTickets { get; set; }
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
             Discarded = new HashSet<int>();
             RangesTickets = new List<Range>();
@@ -77,33 +76,28 @@ namespace Day16
             //Build classifier
             Console.WriteLine(Discarded.Count);
             //Clean up tickets
-            List<string> cleanTickets = new List<string>();
+            var cleanTickets = new List<string>();
             var matrix = new List<IEnumerable<int>>();
             foreach (var row in NearbyTickets)
             {
                 var numbers = row.Split(",").Select(int.Parse);
                 var s = new List<int>();
                 foreach (var number in numbers)
-                {
                     if (!Discarded.Contains(number))
                         s.Add(number);
                     else
-                    {
                         s.Add(-1);
-                    }
-                }
 
                 matrix.Add(s);
             }
 
-            Table<IEnumerable<int>>.Add(matrix,"T")
-                .FilterOutColumns(new[] { "Capacity", "Count" })
+            Table<IEnumerable<int>>.Add(matrix, "T")
+                .FilterOutColumns(new[] {"Capacity", "Count"})
                 .ToConsole();
 
             //Check the first column to identify which are the numbers that belong to a range
             var rangeTables = new Dictionary<int, List<RangeTable>>();
-            for (int i = 0; i < 20; i++)
-            {
+            for (var i = 0; i < 20; i++)
                 foreach (var range in RangesTickets)
                 {
                     var belongs = true;
@@ -122,35 +116,26 @@ namespace Day16
                     {
                         Console.WriteLine($"Column:{i}, {range.GetName()}: Belongs: {belongs}");
                         if (rangeTables.ContainsKey(i))
-                        {
                             rangeTables[i].Add(new RangeTable(i, range.GetName()));
-                        }
                         else
-                        {
-                            rangeTables.Add(i, new List<RangeTable>{new RangeTable(i, range.GetName())});
-                        }
+                            rangeTables.Add(i, new List<RangeTable> {new RangeTable(i, range.GetName())});
                     }
                 }
-            }
 
             Console.WriteLine("");
 
-            var counts = rangeTables.
-                ToDictionary(item => item.Key, item => item.Value.Count);
+            var counts = rangeTables.ToDictionary(item => item.Key, item => item.Value.Count);
 
             var sorted = from items in counts
-                orderby items.Value ascending
+                orderby items.Value
                 select items;
 
-            foreach (var sort in sorted)
-            {
-                Console.WriteLine($"{sort.Key}, {sort.Value}");
-            }
+            foreach (var sort in sorted) Console.WriteLine($"{sort.Key}, {sort.Value}");
 
             Console.WriteLine("");
             var dictionarySorted = sorted.ToDictionary(x => x.Key, x => x.Value);
             //Check items one by one to determine order
-            Dictionary<string, int> taken = new Dictionary<string, int>();
+            var taken = new Dictionary<string, int>();
             while (taken.Count != 20)
             {
                 foreach (var index in dictionarySorted)
@@ -158,25 +143,25 @@ namespace Day16
                     var inspect = dictionarySorted[index.Key];
                     if (inspect == 1)
                     {
-                        string category = rangeTables[index.Key][0].Name;
+                        var category = rangeTables[index.Key][0].Name;
                         taken.Add(category, index.Key);
-                        
+
                         foreach (var h in rangeTables)
                         {
                             var itemToRemove = h.Value.SingleOrDefault(r => r.Name == category);
                             if (itemToRemove != null)
                                 h.Value.Remove(itemToRemove);
                         }
+
                         rangeTables.Remove(index.Key);
                         break;
                     }
                 }
 
-                counts = rangeTables.
-                    ToDictionary(item => item.Key, item => item.Value.Count);
+                counts = rangeTables.ToDictionary(item => item.Key, item => item.Value.Count);
 
                 sorted = from items in counts
-                    orderby items.Value ascending
+                    orderby items.Value
                     select items;
 
                 dictionarySorted = sorted.ToDictionary(x => x.Key, x => x.Value);
@@ -185,8 +170,8 @@ namespace Day16
             Console.WriteLine("Classification:");
             Console.WriteLine(YourTickets[0]);
             var individual = YourTickets[0].Split(",").Select(int.Parse);
-            Dictionary<int, int> mytickets = individual
-                .Select((s, index) => new { s, index })
+            var mytickets = individual
+                .Select((s, index) => new {s, index})
                 .ToDictionary(x => x.index, x => x.s);
 
             long amount = 1;
@@ -199,16 +184,17 @@ namespace Day16
                     Console.WriteLine(mytickets[take.Value]);
                 }
             }
+
             Console.WriteLine(amount);
         }
 
         private static void Part1()
         {
             var file = File.ReadAllLines("input.txt");
-            bool startScanTickets = false;
-            bool startYourTickets = false;
-            List<int> tickets = new List<int>();
-            
+            var startScanTickets = false;
+            var startYourTickets = false;
+            var tickets = new List<int>();
+
             foreach (var row in file)
             {
                 if (startScanTickets)
@@ -223,10 +209,9 @@ namespace Day16
                     if (row.Length > 10)
                         YourTickets.Add(row);
                     else
-                    {
                         startYourTickets = false;
-                    }
                 }
+
                 if (row.Contains("nearby tickets:"))
                 {
                     startYourTickets = false;
@@ -244,25 +229,21 @@ namespace Day16
                     var first = subRanges[0].Split("-");
                     var second = subRanges[1].Split("-");
                     RangesTickets.Add(new Range(
-                            ranges[0].Trim(),
-                        int.Parse(first[0].Trim()), 
+                        ranges[0].Trim(),
+                        int.Parse(first[0].Trim()),
                         int.Parse(first[1].Trim()),
                         int.Parse(second[0].Trim()),
                         int.Parse(second[1].Trim())));
                 }
             }
 
-            int notInRange = 0;
-            foreach(var ticket in tickets)
+            var notInRange = 0;
+            foreach (var ticket in tickets)
             {
-                bool allInRange = false;
+                var allInRange = false;
                 foreach (var rangesTicket in RangesTickets)
-                {
                     if (rangesTicket.InRange(ticket))
-                    {
                         allInRange = true;
-                    }
-                }
                 if (!allInRange)
                 {
                     Console.WriteLine(ticket);
@@ -270,6 +251,7 @@ namespace Day16
                     notInRange += ticket;
                 }
             }
+
             Console.WriteLine(notInRange);
         }
     }

@@ -3,19 +3,19 @@ using System.IO;
 
 namespace Day2
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             FirstInterpretation();
             SecondInterpretation();
         }
 
-        static void FirstInterpretation()
+        private static void FirstInterpretation()
         {
             var data = File.ReadAllLines("Data.txt");
             //9-10 b: bbktbbbxhfbpb
-            int countValid = 0;
+            var countValid = 0;
             foreach (var line in data)
             {
                 Console.WriteLine(line);
@@ -27,29 +27,26 @@ namespace Day2
                 var min = int.Parse(numbers[0]);
                 var max = int.Parse(numbers[1]);
 
-                int occurrences = 0;
+                var occurrences = 0;
                 foreach (var single in text)
-                {
                     if (single.ToString() == character)
-                    {
                         occurrences++;
-                    }
-                }
 
-                bool valid = occurrences >= min && occurrences <= max;
+                var valid = occurrences >= min && occurrences <= max;
 
                 if (valid)
                     countValid++;
             }
+
             Console.WriteLine($"{countValid}");
             Console.ReadKey();
         }
 
-        static void SecondInterpretation()
+        private static void SecondInterpretation()
         {
             var data = File.ReadAllLines("Data.txt");
             //9-10 b: bbktbbbxhfbpb
-            int countValid = 0;
+            var countValid = 0;
             foreach (var line in data)
             {
                 Console.WriteLine(line);
@@ -61,16 +58,14 @@ namespace Day2
                 var min = int.Parse(numbers[0]);
                 var max = int.Parse(numbers[1]);
 
-                bool valid = text[min - 1].ToString() == character;
+                var valid = text[min - 1].ToString() == character;
 
-                if (text[max - 1].ToString() == character)
-                {
-                    valid = !valid;
-                }
-                
+                if (text[max - 1].ToString() == character) valid = !valid;
+
                 if (valid)
                     countValid++;
             }
+
             Console.WriteLine($"{countValid}");
             Console.ReadKey();
         }

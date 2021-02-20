@@ -4,18 +4,16 @@ using System.IO;
 
 namespace Day10
 {
-    class Program
+    internal class Program
     {
         public static long CountMax { get; set; }
-        static void Main()
+
+        private static void Main()
         {
             var file = File.ReadAllLines("input.txt");
-            List<int> sorted = new List<int>();
+            var sorted = new List<int>();
 
-            foreach (var row in file)
-            {
-                sorted.Add(int.Parse(row));
-            }
+            foreach (var row in file) sorted.Add(int.Parse(row));
             sorted.Sort();
 
             Part1(sorted);
@@ -25,10 +23,10 @@ namespace Day10
 
         public static void Part1(List<int> sorted)
         {
-            int jolted = 0;
-            int difference1 = 0;
-            int difference2 = 0;
-            int difference3 = 0;
+            var jolted = 0;
+            var difference1 = 0;
+            var difference2 = 0;
+            var difference3 = 0;
             foreach (var item in sorted)
             {
                 if (jolted + 1 == item)
@@ -63,8 +61,8 @@ namespace Day10
 
         public static void Part2(List<int> sorted)
         {
-            Dictionary<int, int> items = new Dictionary<int, int>();
-            foreach(var item in sorted)
+            var items = new Dictionary<int, int>();
+            foreach (var item in sorted)
                 items.Add(item, item);
             GeneratePaths(items, 0, sorted[^1]);
             Console.WriteLine($"Max leaves: {CountMax}");
@@ -78,7 +76,7 @@ namespace Day10
                 GeneratePaths(sorted, sorted[previous + 2], leaf);
             if (sorted.ContainsKey(previous + 3))
                 GeneratePaths(sorted, sorted[previous + 3], leaf);
-            if (previous==leaf)
+            if (previous == leaf)
                 CountMax++;
         }
     }

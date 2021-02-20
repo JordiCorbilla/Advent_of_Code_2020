@@ -6,14 +6,14 @@ namespace Day7
 {
     public class Bag
     {
-        public int Capacity { get; set; }
-        public string Name { get; set; }
-
         public Bag(int capacity, string name)
         {
             Capacity = capacity;
             Name = name;
         }
+
+        public int Capacity { get; set; }
+        public string Name { get; set; }
 
         public override string ToString()
         {
@@ -30,7 +30,7 @@ namespace Day7
         private static void Main()
         {
             var file = File.ReadAllLines("input.txt");
-            
+
             foreach (var s in file)
             {
                 var bags = s.Replace(".", "");
@@ -42,7 +42,8 @@ namespace Day7
                 key = key.Replace("bags", "").Replace("bag", "").Trim();
                 foreach (var component in components)
                 {
-                    var number = int.Parse(component.Trim().Substring(0, component.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
+                    var number = int.Parse(component.Trim()
+                        .Substring(0, component.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
                     var nameBag = component.Replace(number.ToString(), "").Trim();
                     nameBag = nameBag.Replace("bags", "").Replace("bag", "").Trim();
                     BuildRule(key, nameBag, number);
@@ -56,6 +57,7 @@ namespace Day7
             {
                 Console.WriteLine(bag);
             }
+
             Console.WriteLine(NodesVisited.Count);
 
             Part2();
@@ -89,7 +91,7 @@ namespace Day7
         private static void Part2()
         {
             var file = File.ReadAllLines("input.txt");
-            
+
             foreach (var s in file)
             {
                 var bags = s.Replace(".", "");
@@ -102,11 +104,13 @@ namespace Day7
                 var list = new List<Bag>();
                 foreach (var component in components)
                 {
-                    var number = int.Parse(component.Trim().Substring(0, component.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
+                    var number = int.Parse(component.Trim()
+                        .Substring(0, component.Trim().IndexOf(" ", StringComparison.Ordinal)).Replace(" ", ""));
                     var nameBag = component.Replace(number.ToString(), "").Trim();
                     nameBag = nameBag.Replace("bags", "").Replace("bag", "").Trim();
-                    list.Add(new Bag(number, nameBag));   
+                    list.Add(new Bag(number, nameBag));
                 }
+
                 RulesTree.Add(key, list);
             }
 

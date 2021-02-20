@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Day4
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             SimplePassportChecker();
             ComplexPassportChecker();
@@ -15,48 +15,41 @@ namespace Day4
         private static void ComplexPassportChecker()
         {
             var file = File.ReadAllLines("input.txt");
-            var mandatoryFields = new[] { "byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:" };
+            var mandatoryFields = new[] {"byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:"};
             var fieldRules = new Dictionary<string, IRule>
             {
                 {"byr", new DigitRule {NumDigits = 4, Min = 1920, Max = 2002}},
                 {"iyr", new DigitRule {NumDigits = 4, Min = 2010, Max = 2020}},
                 {"eyr", new DigitRule {NumDigits = 4, Min = 2020, Max = 2030}},
-                {"hgt", new HeightRule() },
-                {"hcl", new HairRule() },
-                {"ecl", new EyeRule() },
-                {"pid", new PassportRule() }
+                {"hgt", new HeightRule()},
+                {"hcl", new HairRule()},
+                {"ecl", new EyeRule()},
+                {"pid", new PassportRule()}
             };
 
-            int countValid = 0;
-            string passport = "";
+            var countValid = 0;
+            var passport = "";
             foreach (var line in file)
-            {
                 if (line != "")
                 {
                     passport += line + Environment.NewLine;
                 }
                 else
                 {
-                    bool valid = ProcessPassport(passport, mandatoryFields);
+                    var valid = ProcessPassport(passport, mandatoryFields);
                     valid = valid && ExtraValidation(passport, fieldRules);
-                    if (valid)
-                    {
-                        countValid++;
-                    }
+                    if (valid) countValid++;
 
                     passport = "";
                 }
-            }
 
             if (passport != "")
             {
-                bool valid = ProcessPassport(passport, mandatoryFields);
+                var valid = ProcessPassport(passport, mandatoryFields);
                 valid = valid && ExtraValidation(passport, fieldRules);
-                if (valid)
-                {
-                    countValid++;
-                }
+                if (valid) countValid++;
             }
+
             Console.WriteLine(countValid);
         }
 
@@ -64,7 +57,7 @@ namespace Day4
         {
             var cleanup = passport.Replace(Environment.NewLine, " ");
             var fields = cleanup.Split(" ");
-            bool valid = true;
+            var valid = true;
             foreach (var field in fields)
             {
                 var keys = field.Split(":");
@@ -85,35 +78,27 @@ namespace Day4
         private static void SimplePassportChecker()
         {
             var file = File.ReadAllLines("input.txt");
-            var mandatoryFields = new[] { "byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:" };
+            var mandatoryFields = new[] {"byr:", "iyr:", "eyr:", "hgt:", "hcl:", "ecl:", "pid:"};
 
-            int countValid = 0;
-            string passport = "";
+            var countValid = 0;
+            var passport = "";
             foreach (var line in file)
-            {
                 if (line != "")
                 {
                     passport += line;
                 }
                 else
                 {
-                    bool valid = ProcessPassport(passport, mandatoryFields);
-                    if (valid)
-                    {
-                        countValid++;
-                    }
+                    var valid = ProcessPassport(passport, mandatoryFields);
+                    if (valid) countValid++;
 
                     passport = "";
                 }
-            }
 
             if (passport != "")
             {
-                bool valid = ProcessPassport(passport, mandatoryFields);
-                if (valid)
-                {
-                    countValid++;
-                }
+                var valid = ProcessPassport(passport, mandatoryFields);
+                if (valid) countValid++;
             }
 
             Console.WriteLine(countValid);
@@ -121,18 +106,15 @@ namespace Day4
 
         private static bool ProcessPassport(string passport, string[] mandatoryFields)
         {
-            bool valid = true;
+            var valid = true;
             foreach (var field in mandatoryFields)
-            {
                 if (!passport.Contains(field))
                 {
                     valid = false;
                     break;
                 }
-            }
+
             return valid;
         }
     }
-
-    
 }

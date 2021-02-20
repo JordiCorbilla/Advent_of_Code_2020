@@ -36,14 +36,13 @@ namespace Day11
                 while (seat < MaxSeats || row < MaxRows)
                 {
                     if (seat < MaxSeats)
+                    {
                         seat++;
+                    }
                     else
                     {
                         seat = 0;
-                        if (row < MaxRows)
-                        {
-                            row++;
-                        }
+                        if (row < MaxRows) row++;
                     }
 
                     var changed = CheckMostAdjacent(seat, row, previous1);
@@ -80,14 +79,13 @@ namespace Day11
                 while (seat < MaxSeats || row < MaxRows)
                 {
                     if (seat < MaxSeats)
+                    {
                         seat++;
+                    }
                     else
                     {
                         seat = 0;
-                        if (row < MaxRows)
-                        {
-                            row++;
-                        }
+                        if (row < MaxRows) row++;
                     }
 
                     var changed = CheckDeepAdjacent(seat, row, previous1);
@@ -107,10 +105,7 @@ namespace Day11
 
         private static void Print(IEnumerable<string> list)
         {
-            foreach (var item in list)
-            {
-                Console.WriteLine(item);
-            }
+            foreach (var item in list) Console.WriteLine(item);
             Console.WriteLine();
         }
 
@@ -162,13 +157,14 @@ namespace Day11
                         break;
                 }
             }
+
             // XXX
             // XXX
             // XXO
-            if (seat + 1 <= MaxSeats && row+1 <= MaxRows)
+            if (seat + 1 <= MaxSeats && row + 1 <= MaxRows)
             {
                 max++;
-                var next = backup[row+1][seat + 1];
+                var next = backup[row + 1][seat + 1];
                 switch (next)
                 {
                     case 'L':
@@ -180,6 +176,7 @@ namespace Day11
                         break;
                 }
             }
+
             // XXX
             // XXX
             // XOX
@@ -198,6 +195,7 @@ namespace Day11
                         break;
                 }
             }
+
             // XXX
             // XXX
             // OXX
@@ -216,13 +214,14 @@ namespace Day11
                         break;
                 }
             }
+
             // XXX
             // OXX
             // XXX
             if (seat - 1 >= 0)
             {
                 max++;
-                var next = backup[row][seat-1];
+                var next = backup[row][seat - 1];
                 switch (next)
                 {
                     case 'L':
@@ -234,6 +233,7 @@ namespace Day11
                         break;
                 }
             }
+
             // OXX
             // XXX
             // XXX
@@ -252,6 +252,7 @@ namespace Day11
                         break;
                 }
             }
+
             // XOX
             // XXX
             // XXX
@@ -270,6 +271,7 @@ namespace Day11
                         break;
                 }
             }
+
             // XXO
             // XXX
             // XXX
@@ -288,6 +290,7 @@ namespace Day11
                         break;
                 }
             }
+
             switch (currentSeat)
             {
                 case 'L' when max == empty:
@@ -338,28 +341,27 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent < MaxSeats)
-                        {
-                            next = backup[row][++cent];
-                        }
+                        while (next == '.' && cent < MaxSeats) next = backup[row][++cent];
 
                         if (next == '.')
                             next = 'L';
                         switch (next)
                         {
-                            case 'L': 
+                            case 'L':
                                 empty++;
                                 break;
-                            case '#': 
+                            case '#':
                                 occupied++;
                                 break;
                         }
+
                         break;
                     case '#':
                         occupied++;
                         break;
                 }
             }
+
             // XXX
             // XXX
             // XXO
@@ -376,10 +378,7 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent < MaxSeats && cent2 < MaxRows)
-                        {
-                            next = backup[++cent2][++cent];
-                        }
+                        while (next == '.' && cent < MaxSeats && cent2 < MaxRows) next = backup[++cent2][++cent];
 
                         if (next == '.')
                             next = 'L';
@@ -392,12 +391,14 @@ namespace Day11
                                 occupied++;
                                 break;
                         }
+
                         break;
                     case '#':
                         occupied++;
                         break;
                 }
             }
+
             // XXX
             // XXX
             // XOX
@@ -413,10 +414,7 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent < MaxRows)
-                        {
-                            next = backup[++cent][seat];
-                        }
+                        while (next == '.' && cent < MaxRows) next = backup[++cent][seat];
 
                         if (next == '.')
                             next = 'L';
@@ -429,12 +427,14 @@ namespace Day11
                                 occupied++;
                                 break;
                         }
+
                         break;
                     case '#':
                         occupied++;
                         break;
                 }
             }
+
             // XXX
             // XXX
             // OXX
@@ -451,10 +451,7 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent > 0 && cent2 < MaxRows)
-                        {
-                            next = backup[++cent2][--cent];
-                        }
+                        while (next == '.' && cent > 0 && cent2 < MaxRows) next = backup[++cent2][--cent];
 
                         if (next == '.')
                             next = 'L';
@@ -467,12 +464,14 @@ namespace Day11
                                 occupied++;
                                 break;
                         }
+
                         break;
                     case '#':
                         occupied++;
                         break;
                 }
             }
+
             // XXX
             // OXX
             // XXX
@@ -488,10 +487,7 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent > 0)
-                        {
-                            next = backup[row][--cent];
-                        }
+                        while (next == '.' && cent > 0) next = backup[row][--cent];
 
                         if (next == '.')
                             next = 'L';
@@ -504,12 +500,14 @@ namespace Day11
                                 occupied++;
                                 break;
                         }
+
                         break;
                     case '#':
                         occupied++;
                         break;
                 }
             }
+
             // OXX
             // XXX
             // XXX
@@ -526,10 +524,7 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent > 0 && cent2 > 0)
-                        {
-                            next = backup[--cent2][--cent];
-                        }
+                        while (next == '.' && cent > 0 && cent2 > 0) next = backup[--cent2][--cent];
 
                         if (next == '.')
                             next = 'L';
@@ -542,12 +537,14 @@ namespace Day11
                                 occupied++;
                                 break;
                         }
+
                         break;
                     case '#':
                         occupied++;
                         break;
                 }
             }
+
             // XOX
             // XXX
             // XXX
@@ -563,10 +560,7 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent > 0)
-                        {
-                            next = backup[--cent][seat];
-                        }
+                        while (next == '.' && cent > 0) next = backup[--cent][seat];
 
                         if (next == '.')
                             next = 'L';
@@ -579,12 +573,14 @@ namespace Day11
                                 occupied++;
                                 break;
                         }
+
                         break;
                     case '#':
                         occupied++;
                         break;
                 }
             }
+
             // XXO
             // XXX
             // XXX
@@ -601,10 +597,7 @@ namespace Day11
                         empty++;
                         break;
                     case '.':
-                        while (next == '.' && cent < MaxSeats && cent2 > 0)
-                        {
-                            next = backup[--cent2][++cent];
-                        }
+                        while (next == '.' && cent < MaxSeats && cent2 > 0) next = backup[--cent2][++cent];
 
                         if (next == '.')
                             next = 'L';
@@ -617,6 +610,7 @@ namespace Day11
                                 occupied++;
                                 break;
                         }
+
                         break;
                     case '#':
                         occupied++;
@@ -627,23 +621,23 @@ namespace Day11
             switch (currentSeat)
             {
                 case 'L' when visited == empty:
-                    {
-                        var seats = backup[row];
-                        var chars = seats.ToCharArray();
-                        chars[seat] = '#';
-                        var newArrangement = new string(chars);
-                        backup[row] = newArrangement;
-                        break;
-                    }
+                {
+                    var seats = backup[row];
+                    var chars = seats.ToCharArray();
+                    chars[seat] = '#';
+                    var newArrangement = new string(chars);
+                    backup[row] = newArrangement;
+                    break;
+                }
                 case '#' when occupied >= 5:
-                    {
-                        var seats = backup[row];
-                        var chars = seats.ToCharArray();
-                        chars[seat] = 'L';
-                        var newArrangement = new string(chars);
-                        backup[row] = newArrangement;
-                        break;
-                    }
+                {
+                    var seats = backup[row];
+                    var chars = seats.ToCharArray();
+                    chars[seat] = 'L';
+                    var newArrangement = new string(chars);
+                    backup[row] = newArrangement;
+                    break;
+                }
             }
 
             return backup;

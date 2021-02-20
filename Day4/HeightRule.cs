@@ -2,13 +2,13 @@
 
 namespace Day4
 {
-    public class HeightRule: IRule
+    public class HeightRule : IRule
     {
         public bool Valid(string height)
         {
             var heights = new Dictionary<string, MinMaxRule>
             {
-                {"cm", new MinMaxRule() {Min = 150, Max = 193}}, {"in", new MinMaxRule() {Min = 59, Max = 76}}
+                {"cm", new MinMaxRule {Min = 150, Max = 193}}, {"in", new MinMaxRule {Min = 59, Max = 76}}
             };
 
             if (height.Contains("cm"))
@@ -17,6 +17,7 @@ namespace Day4
                 var rule = heights["cm"];
                 return rule.Valid(int.Parse(totalHeight));
             }
+
             if (height.Contains("in"))
             {
                 var totalHeight = height.Replace("in", "");

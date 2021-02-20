@@ -15,10 +15,6 @@ namespace Day8
 
     public class Instruction
     {
-        public InstructionOperation Operation { get; set; }
-        public int Value { get; set; }
-        public bool Visited { get; set; }
-
         public Instruction(string operation, string value)
         {
             Operation = operation switch
@@ -33,11 +29,16 @@ namespace Day8
             Value = int.Parse(value);
             Visited = false;
         }
+
+        public InstructionOperation Operation { get; set; }
+        public int Value { get; set; }
+        public bool Visited { get; set; }
     }
+
     public class Program
     {
         public static int Accumulator { get; set; }
-        
+
         static void Main()
         {
             var file = File.ReadAllLines("inputfix.txt");
@@ -107,13 +108,15 @@ namespace Day8
                     var success = PerformBootCheck(listInstructions);
                     if (success)
                     {
-                        Console.WriteLine($"success instruction {i} {listInstructions[i].Operation} {listInstructions[i].Value}");
+                        Console.WriteLine(
+                            $"success instruction {i} {listInstructions[i].Operation} {listInstructions[i].Value}");
                         break;
                     }
 
                     listInstructions = file.Select(row => row.Split(" "))
                         .Select(ins => new Instruction(ins[0], ins[1])).ToList();
                 }
+
                 if (listInstructionsToTest[i].Operation == InstructionOperation.nop)
                 {
                     listInstructions[i].Operation = InstructionOperation.jmp;
@@ -121,7 +124,8 @@ namespace Day8
                     var success = PerformBootCheck(listInstructions);
                     if (success)
                     {
-                        Console.WriteLine($"success instruction {i} {listInstructions[i].Operation} {listInstructions[i].Value}");
+                        Console.WriteLine(
+                            $"success instruction {i} {listInstructions[i].Operation} {listInstructions[i].Value}");
                         break;
                     }
 
@@ -129,6 +133,7 @@ namespace Day8
                         .Select(ins => new Instruction(ins[0], ins[1])).ToList();
                 }
             }
+
             Console.WriteLine(Accumulator);
         }
 

@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Day14
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             Part1();
             Console.WriteLine();
@@ -19,19 +19,16 @@ namespace Day14
             var file = File.ReadAllLines("input.txt");
 
             var currentMask = "";
-            Dictionary<long, long> memory = new Dictionary<long, long>();
+            var memory = new Dictionary<long, long>();
             foreach (var row in file)
             {
-                if (row.Contains("mask ="))
-                {
-                    currentMask = row.Replace("mask = ", "");
-                }
+                if (row.Contains("mask =")) currentMask = row.Replace("mask = ", "");
                 //mem[8] = 11
                 if (row.Contains("mem["))
                 {
                     var mem = row.Replace("mem[", "").Replace("] = ", ",").Split(",");
-                    long pos = long.Parse(mem[0]);
-                    long value = long.Parse(mem[1]);
+                    var pos = long.Parse(mem[0]);
+                    var value = long.Parse(mem[1]);
 
                     var floating = BitMaskV2(currentMask, ToBase36(pos));
 
@@ -41,22 +38,15 @@ namespace Day14
                     {
                         var address = FromBase36(mask);
                         if (memory.ContainsKey(address))
-                        {
                             memory[address] = value;
-                        }
                         else
-                        {
                             memory.Add(address, value);
-                        }
                     }
                 }
             }
 
             long acc2 = 0;
-            foreach (var item in memory)
-            {
-                acc2 += item.Value;
-            }
+            foreach (var item in memory) acc2 += item.Value;
             Console.WriteLine(acc2);
         }
 
@@ -64,36 +54,26 @@ namespace Day14
         {
             var file = File.ReadAllLines("input.txt");
             var currentMask = "";
-            Dictionary<long, long> memory = new Dictionary<long, long>();
+            var memory = new Dictionary<long, long>();
             foreach (var row in file)
             {
-                if (row.Contains("mask ="))
-                {
-                    currentMask = row.Replace("mask = ", "");
-                }
+                if (row.Contains("mask =")) currentMask = row.Replace("mask = ", "");
                 //mem[8] = 11
                 if (row.Contains("mem["))
                 {
                     var mem = row.Replace("mem[", "").Replace("] = ", ",").Split(",");
-                    long pos = long.Parse(mem[0]);
-                    long value = long.Parse(mem[1]);
+                    var pos = long.Parse(mem[0]);
+                    var value = long.Parse(mem[1]);
                     var result = BitMask(currentMask, ToBase36(value));
                     if (memory.ContainsKey(pos))
-                    {
                         memory[pos] = result;
-                    }
                     else
-                    {
                         memory.Add(pos, result);
-                    }
                 }
             }
 
             long acc = 0;
-            foreach (var item in memory)
-            {
-                acc += item.Value;
-            }
+            foreach (var item in memory) acc += item.Value;
             Console.WriteLine(acc);
         }
 
@@ -113,7 +93,7 @@ namespace Day14
 
         private static long FromBase36(string base36)
         {
-            int exponent = 35;
+            var exponent = 35;
             double result = 0;
             foreach (var digit in base36)
             {
@@ -122,17 +102,15 @@ namespace Day14
                 exponent--;
             }
 
-            return (long)result;
+            return (long) result;
         }
 
         private static long BitMask(string mask, string base36)
         {
             var result = mask.ToCharArray();
-            for (int i = 0; i < mask.Length; i++)
-            {
+            for (var i = 0; i < mask.Length; i++)
                 if (mask[i] == 'X')
                     result[i] = base36[i];
-            }
 
             return FromBase36(new string(result));
         }
@@ -140,11 +118,9 @@ namespace Day14
         private static string BitMaskV2(string mask, string base36)
         {
             var result = mask.ToCharArray();
-            for (int i = 0; i < mask.Length; i++)
-            {
+            for (var i = 0; i < mask.Length; i++)
                 if (mask[i] == '0')
                     result[i] = base36[i];
-            }
 
             return new string(result);
         }
@@ -161,7 +137,6 @@ namespace Day14
                     var chars = m.ToCharArray();
 
                     for (var i = 0; i < m.Length; i++)
-                    {
                         if (m[i] == 'X')
                         {
                             chars[i] = '0';
@@ -170,9 +145,8 @@ namespace Day14
                             generated.Add(new string(chars));
                             break;
                         }
-                    }
-
                 }
+
                 sequence.Clear();
                 sequence.AddRange(generated);
 

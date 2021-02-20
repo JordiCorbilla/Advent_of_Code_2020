@@ -7,61 +7,53 @@ using System.Text;
 
 namespace Day13
 {
-    public class Bus {
-        public int TimeStamp { get; set; }
-        public bool Marked { get; set; }
-        public int T { get; set; }
-        public bool M { get; set; }
-
+    public class Bus
+    {
         public Bus(string pos, long index)
         {
             TimeStamp = int.Parse(pos);
             if (index % TimeStamp == 0)
                 Marked = true;
         }
+
+        public int TimeStamp { get; set; }
+        public bool Marked { get; set; }
+        public int T { get; set; }
+        public bool M { get; set; }
     }
-    class Program
+
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             //Part1();
             //Console.WriteLine();
             //Part2();
             var file = File.ReadAllLines("input.txt");
             var buses = file[1].Split(',');
-            for (int i = 0; i < buses.Length; i++)
-            {
+            for (var i = 0; i < buses.Length; i++)
                 if (buses[i] != "x")
-                {
                     Console.WriteLine($"(pos + {i}) % {buses[i]}");
-                }
-            }
 
             var file2 = File.ReadAllLines("inputtest6.txt");
             var buses2 = file2[1].Split(',');
-            for (int i = 0; i < buses2.Length; i++)
-            {
+            for (var i = 0; i < buses2.Length; i++)
                 if (buses2[i] != "x")
-                {
                     Console.WriteLine($"(pos + {i}) % {buses2[i]}");
-                }
-            }
 
             Part2Test();
             Part2New();
         }
 
         /// <summary>
-        /// For this part, I first generate the solution (what we are trying to look for) and call it snapshot
-        /// e.g.:
-        /// 
-        /// D...
-        /// .D..
-        /// ..D.
-        /// ...D
-        ///
-        /// Then, I allow the system to run and when I find that the last bus of the list is due to stop, I compare the
-        /// current snapshot against the solution. If they match, then we found what we were looking for.
+        ///     For this part, I first generate the solution (what we are trying to look for) and call it snapshot
+        ///     e.g.:
+        ///     D...
+        ///     .D..
+        ///     ..D.
+        ///     ...D
+        ///     Then, I allow the system to run and when I find that the last bus of the list is due to stop, I compare the
+        ///     current snapshot against the solution. If they match, then we found what we were looking for.
         /// </summary>
         private static void Part2()
         {
@@ -70,18 +62,12 @@ namespace Day13
 
             var busesLong = new List<int>();
             foreach (var bus in buses)
-            {
                 if (bus != "x")
-                {
                     busesLong.Add(int.Parse(bus));
-                }
                 else
-                {
                     busesLong.Add(-1);
-                }
-            }
 
-            long pos = 100333920000000;
+            var pos = 100333920000000;
 
             //Generate Snapshot
             var items = buses.Where(x => x != "x").ToList().Count;
@@ -90,34 +76,31 @@ namespace Day13
             foreach (var b in buses)
             {
                 var a = new string('.', items).ToCharArray();
-                
+
                 if (b != "x")
                 {
                     a[r] = 'D';
                     for (var i = 0; i < buses.Length; i++)
                     {
                         if (buses[i] == "x") continue;
-                        if (snapshot.Count == int.Parse(buses[i]))
-                        {
-                            a[i] = 'D';
-                        }
+                        if (snapshot.Count == int.Parse(buses[i])) a[i] = 'D';
                     }
-                    
+
                     snapshot.Add(new string(a));
                     r++;
                 }
                 else
                 {
-                    snapshot.Add(new string((a)));
+                    snapshot.Add(new string(a));
                 }
             }
 
             var snapshotFlat = "";
-            foreach (var s in snapshot) 
-                snapshotFlat += (s + "-");
+            foreach (var s in snapshot)
+                snapshotFlat += s + "-";
 
             var memory = new LinkedList<string>();
-            Stopwatch sp = Stopwatch.StartNew();
+            var sp = Stopwatch.StartNew();
 
             while (true)
             {
@@ -137,10 +120,11 @@ namespace Day13
                         var found = pos;
                         if (Compare(memory, snapshotFlat))
                         {
-                            Console.WriteLine($"Found in {(found - snapshot.Count) + 1}");
+                            Console.WriteLine($"Found in {found - snapshot.Count + 1}");
                             break;
                         }
                     }
+
                     memory.RemoveFirst();
                 }
 
@@ -154,7 +138,7 @@ namespace Day13
 
         private static bool Compare(IEnumerable<string> item, string snapshot)
         {
-            var one = item.Aggregate("", (current, s) => current + (s + "-"));
+            var one = item.Aggregate("", (current, s) => current + s + "-");
             return one == snapshot;
         }
 
@@ -182,13 +166,14 @@ namespace Day13
                 {
                     s += $"{p.TimeStamp}({p.Marked}), ";
                     if (!p.Marked || trueFound != 0) continue;
-                    trueFound = (int)i;
+                    trueFound = (int) i;
                     busLine = p.TimeStamp;
                 }
+
                 Console.WriteLine($"{i}, {s}");
             }
 
-            Console.WriteLine($"Solution = {(trueFound - initialTimestamp)*busLine}");
+            Console.WriteLine($"Solution = {(trueFound - initialTimestamp) * busLine}");
         }
 
         //getting close 743520161713899
@@ -211,7 +196,7 @@ namespace Day13
         private static void Part2New()
         {
             //         598411311431841
-            long pos = 598411311431841;
+            var pos = 598411311431841;
             while (true)
             {
                 var b = (pos + 35) % 37; // 1147
@@ -239,7 +224,7 @@ namespace Day13
                                             var i = (pos + 91) % 19; // 475
                                             if (i == 0)
                                             {
-                                                Console.WriteLine($"yayyyyyy!");
+                                                Console.WriteLine("yayyyyyy!");
                                                 Console.WriteLine(pos);
                                                 break;
                                             }
@@ -253,10 +238,7 @@ namespace Day13
 
                 pos += 41;
 
-                if (pos % 100000000 == 0)
-                {
-                    Console.WriteLine($"{pos}");
-                }
+                if (pos % 100000000 == 0) Console.WriteLine($"{pos}");
             }
         }
 
@@ -282,10 +264,7 @@ namespace Day13
 
                 pos += 1789;
 
-                if (pos % 100000 == 0)
-                {
-                    Console.WriteLine($"{pos}");
-                }
+                if (pos % 100000 == 0) Console.WriteLine($"{pos}");
             }
         }
     }

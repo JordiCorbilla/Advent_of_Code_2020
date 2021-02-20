@@ -5,14 +5,15 @@ using System.Linq;
 
 namespace Day18
 {
-    class Program
+    internal class Program
     {
         public static Dictionary<string, long> Solutions = new Dictionary<string, long>();
         public static Dictionary<string, long> SubOperations = new Dictionary<string, long>();
-        static void Main()
+
+        private static void Main()
         {
             //3 * (2 + (9 * 2 * 2 + 8) * (7 * 6 * 7 * 3) * (3 * 9 * 7) * (6 * 6)) * 9 * 8 + 6
-            long result = ScanEquation("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2");
+            var result = ScanEquation("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2");
             Console.WriteLine(result);
             Solutions.Clear();
             result = ScanEquation2("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2");
@@ -41,7 +42,8 @@ namespace Day18
 
             Solutions.Clear();
             SubOperations.Clear();
-            result = ScanEquation2("9 + 3 + 5 + 3 * (5 + (8 + 7 * 8 * 8) * (5 + 9 + 9 * 9 * 4)) * (6 * (8 * 5 * 6 * 8 + 4 * 5))");
+            result = ScanEquation2(
+                "9 + 3 + 5 + 3 * (5 + (8 + 7 * 8 * 8) * (5 + 9 + 9 * 9 * 4)) * (6 * (8 * 5 * 6 * 8 + 4 * 5))");
             Console.WriteLine(result);
 
             Solutions.Clear();
@@ -54,7 +56,7 @@ namespace Day18
         public static void Part1()
         {
             var file = File.ReadAllLines("input.txt");
-            long acc = file.Sum(ScanEquation);
+            var acc = file.Sum(ScanEquation);
             Console.WriteLine(acc);
         }
 
@@ -68,6 +70,7 @@ namespace Day18
                 Console.WriteLine($"{row}={sol}");
                 acc += sol;
             }
+
             Console.WriteLine(acc);
         }
 
@@ -80,10 +83,7 @@ namespace Day18
             {
                 foreach (var digit in processing)
                 {
-                    if (start)
-                    {
-                        resolve += digit;
-                    }
+                    if (start) resolve += digit;
 
                     switch (digit)
                     {
@@ -122,9 +122,9 @@ namespace Day18
         {
             //7 * 6 * 7 * 3
             var numbers = s.Split(" ");
-            long accumulator =long.Parse(numbers[0]);
-            bool sum = false;
-            bool mul = false;
+            var accumulator = long.Parse(numbers[0]);
+            var sum = false;
+            var mul = false;
             for (var i = 1; i < numbers.Length; i++)
             {
                 if (mul)
@@ -138,6 +138,7 @@ namespace Day18
                     accumulator += long.Parse(numbers[i]);
                     sum = false;
                 }
+
                 switch (numbers[i])
                 {
                     case "*":
@@ -155,16 +156,13 @@ namespace Day18
         public static long ScanEquation2(string s)
         {
             var resolve = "";
-            bool start = false;
-            string processing = s;
+            var start = false;
+            var processing = s;
             while (processing.Contains("("))
             {
                 foreach (var digit in processing)
                 {
-                    if (start)
-                    {
-                        resolve += digit;
-                    }
+                    if (start) resolve += digit;
 
                     switch (digit)
                     {
@@ -197,6 +195,7 @@ namespace Day18
                     if (!processing.Contains("("))
                         break;
                 }
+
                 Solutions.Clear();
             }
 
@@ -208,7 +207,7 @@ namespace Day18
             //1 + 2 * 3 + 4 * 5 + 6
             //1 * 2 + 3
             var resolve = s;
-            
+
             while (resolve.Contains("+"))
             {
                 var numbers = resolve.Split(" ");
@@ -224,7 +223,7 @@ namespace Day18
 
                         if (!SubOperations.ContainsKey($"{left} + {right}"))
                         {
-                            long calc = left + right;
+                            var calc = left + right;
                             SubOperations.Add($"{left} + {right}", calc);
                         }
                     }

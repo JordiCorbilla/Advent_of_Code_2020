@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Day6
 {
-    class Program
+    internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             SimpleProcessing();
             ComplexProcessing();
@@ -17,25 +17,23 @@ namespace Day6
         {
             var file = File.ReadAllLines("input.txt");
 
-            string group = "";
-            int totalVotes = 0;
+            var group = "";
+            var totalVotes = 0;
             foreach (var line in file)
-            {
                 if (line != "")
                 {
-                    group += line + Environment.NewLine;
+                    @group += line + Environment.NewLine;
                 }
                 else
                 {
-                    int votes = ProcessComplexGroup(group);
+                    var votes = ProcessComplexGroup(@group);
                     totalVotes += votes;
-                    group = "";
+                    @group = "";
                 }
-            }
 
             if (group != "")
             {
-                int votes = ProcessComplexGroup(group);
+                var votes = ProcessComplexGroup(group);
                 totalVotes += votes;
             }
 
@@ -46,21 +44,19 @@ namespace Day6
         {
             var file = File.ReadAllLines("input.txt");
 
-            string group = "";
-            int totalVotes = 0;
+            var group = "";
+            var totalVotes = 0;
             foreach (var line in file)
-            {
                 if (line != "")
                 {
-                    group += line;
+                    @group += line;
                 }
                 else
                 {
-                    var votes = ProcessGroup(group);
+                    var votes = ProcessGroup(@group);
                     totalVotes += votes;
-                    group = "";
+                    @group = "";
                 }
-            }
 
             if (group != "")
             {
@@ -84,20 +80,14 @@ namespace Day6
 
             var answers = new Dictionary<char, int>();
 
-            foreach(var person in people)
+            foreach (var person in people)
             {
                 if (person == "") continue;
                 foreach (var answer in person)
-                {
                     if (!answers.ContainsKey(answer))
-                    {
                         answers.Add(answer, 1);
-                    }
                     else
-                    {
                         answers[answer]++;
-                    }
-                }
             }
 
             return answers.Count(item => item.Value == numPeople);
