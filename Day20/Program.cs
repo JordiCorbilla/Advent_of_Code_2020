@@ -75,7 +75,7 @@ namespace Day20
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    s[j][i] = Cells[i][j];
+                    s[9-i][j] = Cells[i][j];
                 }
             }
 
