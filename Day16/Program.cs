@@ -92,7 +92,7 @@ namespace Day16
             }
 
             Table<IEnumerable<int>>.Add(matrix, "T")
-                .FilterOutColumns(new[] {"Capacity", "Count"})
+                .FilterColumns(new[] {"Capacity", "Count"})
                 .ToConsole();
 
             //Check the first column to identify which are the numbers that belong to a range
